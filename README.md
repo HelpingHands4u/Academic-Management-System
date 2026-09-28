@@ -1,3 +1,3 @@
 # Academic-Management-System
 
-SOYEL 
+UNDER DEV PHASE (0.1 COMPLETE?)
