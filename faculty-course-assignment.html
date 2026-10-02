@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BWU Admin — Faculty Course Assignment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:#f5f7fb;color:#172033}
+button,input,select{font:inherit}
+.topbar{height:82px;background:#fff;border-bottom:1px solid #e7eaf1;display:flex;align-items:center;justify-content:space-between;padding:0 34px;position:sticky;top:0;z-index:5}
+.title{font-size:20px;font-weight:800}.subtitle{font-size:12px;color:#718096;margin-top:4px}
+.admin{display:flex;gap:10px;align-items:center;font-size:12px}.avatar{width:40px;height:40px;border-radius:50%;background:#eceaff;color:#5547db;display:grid;place-items:center;font-weight:800}.admin small{display:block;color:#718096;font-size:10px;margin-top:3px}
+.content{padding:30px 34px 45px;max-width:1500px;margin:auto}
+.hero{background:linear-gradient(135deg,#171f38,#252e4c);color:#fff;border-radius:20px;padding:28px 30px;margin-bottom:22px;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.hero h2{margin:0 0 8px;font-size:24px}.hero p{margin:0;color:#c8d0df;font-size:13px;line-height:1.7;max-width:850px}.badge{padding:9px 13px;border:1px solid #ffffff22;border-radius:12px;background:#ffffff0d;color:#dbe2ef;font-size:11px;white-space:nowrap}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px}
+.card{background:#fff;border:1px solid #e7eaf1;border-radius:16px;box-shadow:0 10px 30px #18213a0b}
+.kpi{padding:19px;display:flex;justify-content:space-between;align-items:center}.kpi small{font-size:10px;color:#718096;font-weight:700}.kpi strong{display:block;font-size:25px;margin-top:6px}.ki{width:42px;height:42px;border-radius:12px;background:#efedff;color:#6254e8;display:grid;place-items:center}
+.assign-card{padding:22px;margin-bottom:20px}.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.st{font-size:16px;font-weight:800}.sn{font-size:11px;color:#718096;margin-top:4px}.step{font-size:10px;font-weight:800;color:#6d5dfc;background:#efedff;padding:7px 9px;border-radius:9px}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:11px;align-items:end}.field label{display:block;font-size:9px;font-weight:700;color:#69748a;margin:0 0 6px 2px;text-transform:uppercase;letter-spacing:.5px}.field select{width:100%;height:42px;border:1px solid #e4e7ee;border-radius:10px;padding:0 10px;background:#fbfcfe;font-size:11px;outline:none;color:#263047}.field select:focus{border-color:#aaa2ff;box-shadow:0 0 0 3px #6d5dfc17}.assign-btn{height:42px;border:0;border-radius:10px;background:#6d5dfc;color:#fff;font-size:11px;font-weight:700;cursor:pointer}
+.hint{margin-top:14px;background:#f8f9fc;border:1px solid #e8ebf2;border-radius:11px;padding:11px 13px;color:#667289;font-size:10px;display:flex;gap:8px;align-items:center}.hint i{color:#6d5dfc}
+.table{overflow:auto}.thead{padding:18px 20px;border-bottom:1px solid #edf0f5;display:flex;justify-content:space-between;align-items:center}.count{font-size:11px;color:#718096}
+table{width:100%;border-collapse:collapse;min-width:1050px}th,td{padding:13px 16px;border-bottom:1px solid #edf0f5;text-align:left;font-size:11px}th{background:#fafbfe;color:#69748a;font-size:9px;text-transform:uppercase;letter-spacing:.5px}
+.person{display:flex;gap:9px;align-items:center}.pa{width:34px;height:34px;border-radius:10px;background:#eceaff;color:#5b4ee3;display:grid;place-items:center;font-weight:800;font-size:10px}.name{font-weight:700}.code{font-size:9px;color:#718096;margin-top:2px}.course{font-weight:700}.subcode{font-size:9px;color:#718096;margin-top:2px}
+.pill{padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}.on{background:#e8f8f0;color:#168557}.tag{padding:5px 8px;border-radius:8px;background:#f0f2f7;color:#526077;font-size:9px;font-weight:700}
+.actions{display:flex;gap:6px}.icon{border:1px solid #e5e8ef;background:#fff;border-radius:8px;width:30px;height:30px;color:#68748a;cursor:pointer}.icon:hover{color:#6d5dfc;border-color:#c9c4ff}
+.toast{position:fixed;right:24px;bottom:24px;background:#141c31;color:#fff;padding:13px 16px;border-radius:12px;font-size:11px;box-shadow:0 15px 40px #0003;transform:translateY(20px);opacity:0;pointer-events:none;transition:.2s}.toast.show{transform:translateY(0);opacity:1}.toast i{color:#63d99e;margin-right:7px}
+.modal{position:fixed;inset:0;background:#07102299;display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.modal.show{display:flex}.box{background:#fff;border-radius:17px;width:min(620px,100%);padding:22px;box-shadow:0 25px 70px #0003}.mh{display:flex;justify-content:space-between;align-items:center}.mh h3{margin:0;font-size:17px}.close{border:0;border-radius:8px;width:32px;height:32px;background:#f1f3f7;cursor:pointer}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.info{background:#f8f9fc;border:1px solid #e7eaf1;border-radius:10px;padding:12px}.info small{display:block;color:#718096;font-size:9px;margin-bottom:5px}.info b{font-size:11px}
+@media(max-width:1100px){.cards{grid-template-columns:repeat(2,1fr)}.flow{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.topbar{padding:0 16px}.content{padding:20px 15px}.hero{align-items:flex-start;flex-direction:column}.flow{grid-template-columns:1fr 1fr}.admin>div:last-child{display:none}}
+@media(max-width:520px){.cards{grid-template-columns:1fr}.flow{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div>
+    <div class="title">Faculty → Course Assignment</div>
+    <div class="subtitle">BWU Administration • Academic responsibility mapping</div>
+  </div>
+  <div class="admin">
+    <div class="avatar">AD</div>
+    <div><b>Administrator</b><small>BWU_ADMIN_001</small></div>
+  </div>
+</header>
+
+<main class="content">
+<section class="hero">
+  <div>
+    <h2>Faculty → Course Assignment</h2>
+    <p>Assign a faculty member to a specific course for a selected department, batch, section and semester. Existing assignments are listed below for administrative review.</p>
+  </div>
+  <div class="badge"><i class="fa-solid fa-link"></i> Assignment Control</div>
+</section>
+
+<section class="cards">
+  <div class="card kpi"><div><small>TOTAL ASSIGNMENTS</small><strong id="total">18</strong></div><div class="ki"><i class="fa-solid fa-link"></i></div></div>
+  <div class="card kpi"><div><small>ACTIVE FACULTY</small><strong>82</strong></div><div class="ki"><i class="fa-solid fa-user-tie"></i></div></div>
+  <div class="card kpi"><div><small>ACTIVE COURSES</small><strong>119</strong></div><div class="ki"><i class="fa-solid fa-book-open"></i></div></div>
+  <div class="card kpi"><div><small>CURRENT SEMESTER</small><strong>III</strong></div><div class="ki"><i class="fa-solid fa-graduation-cap"></i></div></div>
+</section>
+
+<section class="card assign-card">
+  <div class="head">
+    <div><div class="st">Create Course Assignment</div><div class="sn">Follow the academic hierarchy before assigning a faculty member.</div></div>
+    <div class="step">5-STEP ASSIGNMENT</div>
+  </div>
+
+  <div class="flow">
+    <div class="field"><label>01 • Department</label>
+      <select id="department"><option value="">Select Department</option><option>CSE Cyber Security</option><option>CSE Data Science</option><option>CSE</option><option>ECE</option></select>
+    </div>
+    <div class="field"><label>02 • Batch</label>
+      <select id="batch"><option value="">Select Batch</option><option>CSE CYS23</option><option>CSE CYS24</option><option>CSE CYS25</option><option>CSE CYS26</option><option>CSE DS23</option><option>CSE DS24</option><option>CSE DS25</option><option>CSE DS26</option></select>
+    </div>
+    <div class="field"><label>03 • Section</label>
+      <select id="section"><option value="">Select Section</option><option>A</option><option>B</option></select>
+    </div>
+    <div class="field"><label>04 • Semester</label>
+      <select id="semester"><option value="">Select Semester</option><option>I</option><option>II</option><option>III</option><option>IV</option><option>V</option><option>VI</option><option>VII</option><option>VIII</option></select>
+    </div>
+    <div class="field"><label>05 • Course</label>
+      <select id="course"><option value="">Select Course</option><option value="BTY30102">Database Management System</option><option value="BTY30101">Computer Organization and Architecture</option><option value="BES00023">Applied Data Structure and Algorithm</option><option value="BBS00008">Discrete Mathematics</option><option value="BTY39105">Database Management System Lab</option><option value="BTY39104">Computer Organization and Architecture Lab</option><option value="BES09024">Applied Data Structure and Algorithm Lab</option><option value="BES09021">Python for Engineering Essentials Lab</option><option value="BTY38101">Mini Project-I</option><option value="BAU00001">Constitution of India*</option></select>
+    </div>
+  </div>
+
+  <div style="height:12px"></div>
+  <div class="flow" style="grid-template-columns:1fr 1fr 1fr 1fr auto">
+    <div class="field"><label>Faculty</label>
+      <select id="faculty"><option value="">Select Faculty</option><option>Dr. Faculty 01 — BWU_PROF_26_001</option><option>Faculty 02 — BWU_PROF_26_002</option><option>Faculty 03 — BWU_PROF_26_003</option><option>Faculty 04 — BWU_PROF_26_004</option><option>Faculty 05 — BWU_PROF_25_017</option></select>
+    </div>
+    <div class="field"><label>Class Type</label>
+      <select id="classType"><option>Theory</option><option>Lab</option><option>Project</option><option>Audit</option></select>
+    </div>
+    <div class="field"><label>Weekly Hours</label>
+      <select id="hours"><option>01 Hour</option><option selected>02 Hours</option><option>03 Hours</option><option>04 Hours</option><option>05 Hours</option><option>06 Hours</option></select>
+    </div>
+    <div class="field"><label>Academic Year</label>
+      <select id="year"><option>2026–27</option><option>2025–26</option><option>2024–25</option></select>
+    </div>
+    <button class="assign-btn" id="assign"><i class="fa-solid fa-link"></i> Assign Course</button>
+  </div>
+
+  <div class="hint"><i class="fa-solid fa-circle-info"></i><span>The selected faculty will become responsible for attendance, marks, syllabus progress and academic resources for this course assignment.</span></div>
+</section>
+
+<section class="card table">
+  <div class="thead">
+    <div><div class="st">Current Course Assignments</div><div class="sn">Faculty responsibilities mapped to academic groups</div></div>
+    <div class="count" id="count"></div>
+  </div>
+  <table>
+    <thead><tr><th>Faculty</th><th>Course</th><th>Department</th><th>Batch</th><th>Section</th><th>Semester</th><th>Hours</th><th>Status</th><th>Action</th></tr></thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</section>
+</main>
+
+<div class="modal" id="modal">
+  <div class="box">
+    <div class="mh"><h3>Assignment Details</h3><button class="close" id="close">×</button></div>
+    <div class="grid" id="info"></div>
+  </div>
+</div>
+<div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i><span>Course assigned successfully.</span></div>
+
+<script>
+const assignments=[
+["Dr. Faculty 01","BWU_PROF_26_001","Database Management System","BTY30102","CSE Cyber Security","CSE CYS26","B","III","04","Active"],
+["Faculty 02","BWU_PROF_26_002","Computer Organization and Architecture","BTY30101","CSE Cyber Security","CSE CYS26","B","III","04","Active"],
+["Faculty 03","BWU_PROF_26_003","Applied Data Structure and Algorithm","BES00023","CSE Cyber Security","CSE CYS26","B","III","04","Active"],
+["Faculty 04","BWU_PROF_26_004","Discrete Mathematics","BBS00008","CSE Cyber Security","CSE CYS26","B","III","04","Active"],
+["Dr. Faculty 01","BWU_PROF_26_001","Database Management System Lab","BTY39105","CSE Cyber Security","CSE CYS26","B","III","02","Active"],
+["Faculty 02","BWU_PROF_26_002","Computer Organization and Architecture Lab","BTY39104","CSE Cyber Security","CSE CYS26","B","III","02","Active"],
+["Faculty 03","BWU_PROF_26_003","Applied Data Structure and Algorithm Lab","BES09024","CSE Cyber Security","CSE CYS26","B","III","02","Active"],
+["Faculty 04","BWU_PROF_26_004","Python for Engineering Essentials Lab","BES09021","CSE Cyber Security","CSE CYS26","B","III","02","Active"],
+["Faculty 05","BWU_PROF_25_017","Mini Project-I","BTY38101","CSE Cyber Security","CSE CYS25","A","V","02","Active"],
+["Faculty 03","BWU_PROF_26_003","Database Management System","DS30102","CSE Data Science","CSE DS26","A","III","04","Active"]
+];
+
+const tbody=document.getElementById("tbody"),count=document.getElementById("count");
+function render(){
+  tbody.innerHTML=assignments.map((x,i)=>`<tr>
+    <td><div class="person"><div class="pa">${x[0].split(" ").filter(Boolean).map(v=>v[0]).join("").slice(0,2)}</div><div><div class="name">${x[0]}</div><div class="code">${x[1]}</div></div></div></td>
+    <td><div class="course">${x[2]}<div class="subcode">${x[3]}</div></div></td>
+    <td>${x[4]}</td><td>${x[5]}</td><td>${x[6]}</td><td>Semester ${x[7]}</td><td>${x[8]} hrs</td>
+    <td><span class="pill on">${x[9]}</span></td>
+    <td><button class="icon" onclick="view(${i})" title="View assignment"><i class="fa-regular fa-eye"></i></button></td>
+  </tr>`).join("");
+  count.textContent=`${assignments.length} active assignments`;
+  document.getElementById("total").textContent=assignments.length;
+}
+render();
+
+document.getElementById("assign").onclick=()=>{
+  const fields=["department","batch","section","semester","course","faculty"];
+  if(fields.some(id=>!document.getElementById(id).value)){
+    showToast("Please complete all assignment fields.",true); return;
+  }
+  const courseSelect=document.getElementById("course");
+  const facultySelect=document.getElementById("faculty");
+  const courseName=courseSelect.options[courseSelect.selectedIndex].text;
+  const facultyText=facultySelect.options[facultySelect.selectedIndex].text;
+  const facultyCode=facultyText.split(" — ")[1]||"BWU_PROF_26_000";
+  const facultyName=facultyText.split(" — ")[0];
+  assignments.unshift([
+    facultyName,facultyCode,courseName,courseSelect.value,
+    document.getElementById("department").value,document.getElementById("batch").value,
+    document.getElementById("section").value,document.getElementById("semester").value,
+    document.getElementById("hours").value.split(" ")[0],"Active"
+  ]);
+  render();
+  showToast("Course assigned successfully.");
+  fields.forEach(id=>document.getElementById(id).selectedIndex=0);
+};
+
+function showToast(message,error=false){
+  const t=document.getElementById("toast");t.querySelector("span").textContent=message;
+  t.querySelector("i").className=error?"fa-solid fa-circle-exclamation":"fa-solid fa-circle-check";
+  t.querySelector("i").style.color=error?"#ff8c8c":"#63d99e";
+  t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2400);
+}
+
+function view(i){
+  const x=assignments[i];
+  document.getElementById("info").innerHTML=[
+    ["Faculty",x[0]],["Faculty Code",x[1]],["Course",x[2]],["Course Code",x[3]],
+    ["Department",x[4]],["Batch",x[5]],["Section",x[6]],["Semester","Semester "+x[7]],
+    ["Weekly Hours",x[8]+" hours"],["Status",x[9]]
+  ].map(v=>`<div class="info"><small>${v[0]}</small><b>${v[1]}</b></div>`).join("");
+  document.getElementById("modal").classList.add("show");
+}
+document.getElementById("close").onclick=()=>document.getElementById("modal").classList.remove("show");
+document.getElementById("modal").onclick=e=>{if(e.target.id==="modal")e.currentTarget.classList.remove("show")};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")document.getElementById("modal").classList.remove("show")});
+</script>
+</body>
+</html>

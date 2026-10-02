@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BWU Admin — Reports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{--bg:#f4f6fb;--navy:#111827;--text:#182033;--muted:#6c7588;--purple:#6558d3;--line:#e5e8ef;--green:#159a68;--greenbg:#eaf8f2;--orange:#c77b08;--orangebg:#fff5df;--red:#d34d5c;--redbg:#ffedf0;--blue:#3478d4;--bluebg:#edf5ff;--shadow:0 12px 35px rgba(25,35,60,.08)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}
+.topbar{height:70px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 34px}.brand{display:flex;align-items:center;gap:12px;font-weight:800}.brand-mark{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#7569ea,#4d42b6);display:grid;place-items:center}.brand span{font-size:18px}.admin{display:flex;align-items:center;gap:12px;color:#dce2ef;font-size:13px}.avatar{width:38px;height:38px;border-radius:50%;background:#2c3850;display:grid;place-items:center}
+.wrap{max-width:1450px;margin:auto;padding:30px 28px 50px}.hero{display:flex;justify-content:space-between;gap:20px;margin-bottom:24px}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--purple);font-weight:800;margin-bottom:8px}h1{margin:0;font-size:30px;letter-spacing:-.7px}.hero p{margin:9px 0 0;color:var(--muted);font-size:14px}.actions{display:flex;gap:10px}
+.btn{border:0;border-radius:10px;padding:11px 15px;font:700 13px Inter;cursor:pointer;display:inline-flex;gap:8px;align-items:center}.primary{background:var(--purple);color:#fff}.primary:hover{background:#5549c6}.light{background:#fff;border:1px solid var(--line);color:#3f485c}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}.kpi{background:#fff;border:1px solid var(--line);border-radius:15px;padding:20px;box-shadow:var(--shadow)}.kpi-top{display:flex;justify-content:space-between;align-items:center}.label{font-size:12px;color:var(--muted);font-weight:700}.icon{width:38px;height:38px;border-radius:10px;background:#f0edff;color:var(--purple);display:grid;place-items:center}.value{font-size:25px;font-weight:800;margin-top:13px}.note{font-size:11px;color:#8490a3;margin-top:4px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:20px}.head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:15px}.title{font-size:15px;font-weight:800}.sub{font-size:12px;color:var(--muted);margin-top:4px}
+.report-grid{padding:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.report-card{border:1px solid var(--line);border-radius:13px;padding:17px;background:#fff}.report-card:hover{border-color:#c9c4f4}.report-icon{width:40px;height:40px;border-radius:10px;background:#f0edff;color:var(--purple);display:grid;place-items:center;margin-bottom:12px}.report-card h3{font-size:13px;margin:0 0 5px}.report-card p{font-size:11px;color:var(--muted);line-height:1.5;margin:0 0 13px}.report-meta{display:flex;justify-content:space-between;align-items:center}.tag{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--blue);background:var(--bluebg);padding:5px 7px;border-radius:999px}.generate{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 9px;color:#596276;font:700 11px Inter;cursor:pointer}.generate:hover{color:var(--purple);background:#f7f6ff}
+.filters{padding:18px 20px;display:grid;grid-template-columns:1.2fr repeat(4,1fr) auto;gap:11px;border-bottom:1px solid var(--line)}label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.55px;color:#788296;display:block;margin-bottom:6px}select,input{width:100%;height:40px;border:1px solid #dfe3eb;border-radius:9px;padding:0 11px;background:#fff;color:#293247;font:inherit;font-size:12px;outline:none}select:focus,input:focus{border-color:#9d95ec;box-shadow:0 0 0 3px rgba(101,88,211,.08)}.reset{height:40px;padding:0 12px;border:0;border-radius:9px;background:#f1efff;color:#574bc8;font:700 12px Inter;cursor:pointer}
+.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:950px}th{background:#fafbfe;color:#788296;font-size:10px;text-transform:uppercase;letter-spacing:.55px;text-align:left;padding:12px 16px;border-bottom:1px solid var(--line)}td{padding:14px 16px;border-bottom:1px solid #edf0f5;font-size:12px;vertical-align:middle}tr:last-child td{border-bottom:0}.report-name{font-weight:800}.muted{color:var(--muted)}.pill{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:800}.green{background:var(--greenbg);color:var(--green)}.orange{background:var(--orangebg);color:var(--orange)}.blue{background:var(--bluebg);color:var(--blue)}.actions-cell{display:flex;gap:6px}.icon-btn{width:31px;height:31px;border:1px solid var(--line);background:#fff;border-radius:8px;color:#5d6679;cursor:pointer}.icon-btn:hover{background:#f5f3ff;color:var(--purple)}
+.bottom{display:grid;grid-template-columns:1fr 1fr;gap:20px}.body{padding:20px}.metric{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid #edf0f5}.metric:last-child{border-bottom:0}.metric strong{font-size:12px}.metric span{font-size:12px;font-weight:800}.bar{height:7px;background:#edf0f5;border-radius:99px;overflow:hidden;margin-top:6px}.fill{height:100%;background:var(--purple);border-radius:99px}.activity{display:flex;gap:11px;padding:13px 0;border-bottom:1px solid #edf0f5}.activity:last-child{border-bottom:0}.activity-icon{width:34px;height:34px;border-radius:9px;background:#f0edff;color:var(--purple);display:grid;place-items:center;flex:none}.activity strong{font-size:12px}.activity small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(10,15,27,.55);z-index:20;align-items:center;justify-content:center;padding:20px}.modal-bg.show{display:flex}.modal{width:min(700px,100%);background:#fff;border-radius:16px;box-shadow:0 25px 70px rgba(0,0,0,.22);overflow:hidden}.modal-head{padding:19px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}.modal-head h2{margin:0;font-size:17px}.close{border:0;background:none;font-size:21px;color:#778195;cursor:pointer}.modal-body{padding:22px}.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.full{grid-column:1/-1}.modal-foot{padding:15px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:9px}
+.toast{position:fixed;right:24px;bottom:24px;background:#182033;color:#fff;padding:12px 16px;border-radius:10px;font-size:12px;display:none;z-index:30;box-shadow:var(--shadow)}.toast.show{display:block}
+@media(max-width:1100px){.kpis{grid-template-columns:repeat(2,1fr)}.report-grid{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:repeat(3,1fr)}.bottom{grid-template-columns:1fr}}
+@media(max-width:700px){.topbar{padding:0 16px}.admin span{display:none}.wrap{padding:22px 15px 40px}.hero{display:block}.actions{margin-top:15px}.kpis{grid-template-columns:1fr}.report-grid{grid-template-columns:1fr}.filters{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<header class="topbar">
+ <div class="brand"><div class="brand-mark"><i class="fa-solid fa-building-columns"></i></div><span>BWU Admin</span></div>
+ <div class="admin"><span>Administrator · BWU_ADMIN_001</span><div class="avatar"><i class="fa-solid fa-user-shield"></i></div></div>
+</header>
+
+<main class="wrap">
+<section class="hero">
+ <div><div class="eyebrow">Admin Module 12</div><h1>Reports</h1><p>Generate, review and export academic and administrative reports from centralized university data.</p></div>
+ <div class="actions"><button class="btn light" onclick="exportReportList()"><i class="fa-solid fa-file-export"></i> Export List</button><button class="btn primary" onclick="openModal()"><i class="fa-solid fa-chart-column"></i> Generate Report</button></div>
+</section>
+
+<section class="kpis">
+ <div class="kpi"><div class="kpi-top"><span class="label">Reports Generated</span><div class="icon"><i class="fa-solid fa-file-lines"></i></div></div><div class="value">248</div><div class="note">Current academic year</div></div>
+ <div class="kpi"><div class="kpi-top"><span class="label">Academic Reports</span><div class="icon"><i class="fa-solid fa-graduation-cap"></i></div></div><div class="value">164</div><div class="note">Attendance, marks & results</div></div>
+ <div class="kpi"><div class="kpi-top"><span class="label">Administrative</span><div class="icon"><i class="fa-solid fa-building"></i></div></div><div class="value">84</div><div class="note">Operational & management reports</div></div>
+ <div class="kpi"><div class="kpi-top"><span class="label">Scheduled</span><div class="icon"><i class="fa-solid fa-clock"></i></div></div><div class="value">12</div><div class="note">Recurring reports pending</div></div>
+</section>
+
+<section class="panel">
+ <div class="head"><div><div class="title">Report Catalogue</div><div class="sub">Select a report type to generate the latest report.</div></div><span class="pill blue"><i class="fa-solid fa-database" style="margin-right:5px"></i> Centralized data</span></div>
+ <div class="report-grid">
+  <div class="report-card"><div class="report-icon"><i class="fa-solid fa-user-graduate"></i></div><h3>Student Report</h3><p>Student count, active status, department, batch, section and semester distribution.</p><div class="report-meta"><span class="tag">Academic</span><button class="generate" onclick="quickGenerate('Student Report')">Generate</button></div></div>
+  <div class="report-card"><div class="report-icon"><i class="fa-solid fa-user-tie"></i></div><h3>Faculty Report</h3><p>Faculty strength, department, designation, workload and active status summary.</p><div class="report-meta"><span class="tag">Academic</span><button class="generate" onclick="quickGenerate('Faculty Report')">Generate</button></div></div>
+  <div class="report-card"><div class="report-icon"><i class="fa-solid fa-book-open"></i></div><h3>Course Report</h3><p>Course catalogue, credits, course type, department and semester-wise distribution.</p><div class="report-meta"><span class="tag">Academic</span><button class="generate" onclick="quickGenerate('Course Report')">Generate</button></div></div>
+  <div class="report-card"><div class="report-icon"><i class="fa-solid fa-calendar-check"></i></div><h3>Attendance Report</h3><p>Overall and course-wise attendance with held, attended, missed and percentage data.</p><div class="report-meta"><span class="tag">Academic</span><button class="generate" onclick="quickGenerate('Attendance Report')">Generate</button></div></div>
+  <div class="report-card"><div class="report-icon"><i class="fa-solid fa-pen-to-square"></i></div><h3>Marks & Examination Report</h3><p>Assessment marks, examination completion, verification and publication status.</p><div class="report-meta"><span class="tag">Examination</span><button class="generate" onclick="quickGenerate('Marks & Examination Report')">Generate</button></div></div>
+  <div class="report-card"><div class="report-icon"><i class="fa-solid fa-chart-line"></i></div><h3>Syllabus Progress Report</h3><p>Subject-wise syllabus completion, pending topics, faculty and department progress.</p><div class="report-meta"><span class="tag">Academic</span><button class="generate" onclick="quickGenerate('Syllabus Progress Report')">Generate</button></div></div>
+  <div class="report-card"><div class="report-icon"><i class="fa-solid fa-folder-open"></i></div><h3>Academic Resources Report</h3><p>Uploaded resources by subject, faculty, batch, file type and student visibility.</p><div class="report-meta"><span class="tag">Resources</span><button class="generate" onclick="quickGenerate('Academic Resources Report')">Generate</button></div></div>
+  <div class="report-card"><div class="report-icon"><i class="fa-solid fa-calendar-days"></i></div><h3>Timetable Report</h3><p>Weekly class schedules, rooms, faculty assignments and academic group timetable.</p><div class="report-meta"><span class="tag">Operations</span><button class="generate" onclick="quickGenerate('Timetable Report')">Generate</button></div></div>
+  <div class="report-card"><div class="report-icon"><i class="fa-solid fa-layer-group"></i></div><h3>Consolidated Academic Report</h3><p>Combined overview of students, attendance, marks, syllabus and academic resources.</p><div class="report-meta"><span class="tag">Management</span><button class="generate" onclick="quickGenerate('Consolidated Academic Report')">Generate</button></div></div>
+ </div>
+</section>
+
+<section class="panel">
+ <div class="head"><div><div class="title">Generated Reports</div><div class="sub">Previously generated reports available for review and export.</div></div></div>
+ <div class="filters">
+  <div><label>Search</label><input id="search" placeholder="Report name or generated by..." oninput="render()"></div>
+  <div><label>Category</label><select id="category" onchange="render()"><option>All Categories</option><option>Academic</option><option>Examination</option><option>Resources</option><option>Operations</option><option>Management</option></select></div>
+  <div><label>Format</label><select id="format" onchange="render()"><option>All Formats</option><option>PDF</option><option>CSV</option><option>XLSX</option></select></div>
+  <div><label>Period</label><select id="period" onchange="render()"><option>All Periods</option><option>September 2026</option><option>August 2026</option><option>July 2026</option></select></div>
+  <div><label>Status</label><select id="status" onchange="render()"><option>All Status</option><option>Ready</option><option>Scheduled</option></select></div>
+  <div><button class="reset" onclick="resetFilters()"><i class="fa-solid fa-rotate-left"></i> Reset</button></div>
+ </div>
+ <div class="table-wrap">
+ <table>
+  <thead><tr><th>Report</th><th>Category</th><th>Period</th><th>Format</th><th>Generated By</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+  <tbody id="body"></tbody>
+ </table>
+ </div>
+</section>
+
+<section class="bottom">
+ <div class="panel">
+  <div class="head"><div><div class="title">Report Coverage</div><div class="sub">Distribution of reports generated by category.</div></div></div>
+  <div class="body">
+   <div class="metric"><div style="width:100%"><strong>Academic</strong><div class="bar"><div class="fill" style="width:82%"></div></div></div><span>82%</span></div>
+   <div class="metric"><div style="width:100%"><strong>Examination</strong><div class="bar"><div class="fill" style="width:68%"></div></div></div><span>68%</span></div>
+   <div class="metric"><div style="width:100%"><strong>Resources</strong><div class="bar"><div class="fill" style="width:54%"></div></div></div><span>54%</span></div>
+   <div class="metric"><div style="width:100%"><strong>Operations</strong><div class="bar"><div class="fill" style="width:47%"></div></div></div><span>47%</span></div>
+  </div>
+ </div>
+ <div class="panel">
+  <div class="head"><div><div class="title">Recent Activity</div><div class="sub">Latest report generation activity.</div></div></div>
+  <div class="body">
+   <div class="activity"><div class="activity-icon"><i class="fa-solid fa-file-pdf"></i></div><div><strong>Semester III Attendance Report</strong><small>Generated by Administrator · 01 Oct 2026</small></div></div>
+   <div class="activity"><div class="activity-icon"><i class="fa-solid fa-file-excel"></i></div><div><strong>Marks & Examination Register</strong><small>Generated by Administrator · 30 Sep 2026</small></div></div>
+   <div class="activity"><div class="activity-icon"><i class="fa-solid fa-file-lines"></i></div><div><strong>Syllabus Progress Report</strong><small>Generated by Administrator · 29 Sep 2026</small></div></div>
+ </div>
+</section>
+</main>
+
+<div class="modal-bg" id="modal">
+ <div class="modal">
+  <div class="modal-head"><div><h2>Generate Report</h2><div class="sub">Choose the report scope and output format.</div></div><button class="close" onclick="closeModal()">&times;</button></div>
+  <div class="modal-body">
+   <div class="form-grid">
+    <div class="full"><label>Report Type</label><select id="mReport"><option>Student Report</option><option>Faculty Report</option><option>Course Report</option><option>Attendance Report</option><option>Marks & Examination Report</option><option>Syllabus Progress Report</option><option>Academic Resources Report</option><option>Timetable Report</option><option>Consolidated Academic Report</option></select></div>
+    <div><label>Department</label><select><option>All Departments</option><option>CSE Cyber Security</option><option>CSE Data Science</option></select></div>
+    <div><label>Batch</label><select><option>All Batches</option><option>CYS26</option><option>DS26</option></select></div>
+    <div><label>Section</label><select><option>All Sections</option><option>A</option><option>B</option></select></div>
+    <div><label>Semester</label><select><option>All Semesters</option><option>III</option><option>IV</option></select></div>
+    <div><label>Output Format</label><select id="mFormat"><option>PDF</option><option>CSV</option><option>XLSX</option></select></div>
+    <div><label>Reporting Period</label><select><option>September 2026</option><option>August 2026</option><option>July 2026</option></select></div>
+   </div>
+  </div>
+  <div class="modal-foot"><button class="btn light" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="generate()"><i class="fa-solid fa-file-circle-plus"></i> Generate</button></div>
+ </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const reports=[
+{name:'Semester III Student Summary',category:'Academic',period:'September 2026',format:'PDF',by:'Administrator',date:'01 Oct 2026',status:'Ready'},
+{name:'Semester III Attendance Report',category:'Academic',period:'September 2026',format:'PDF',by:'Administrator',date:'01 Oct 2026',status:'Ready'},
+{name:'Marks & Examination Register',category:'Examination',period:'September 2026',format:'XLSX',by:'Administrator',date:'30 Sep 2026',status:'Ready'},
+{name:'Syllabus Progress Report',category:'Academic',period:'September 2026',format:'PDF',by:'Administrator',date:'29 Sep 2026',status:'Ready'},
+{name:'Academic Resources Register',category:'Resources',period:'September 2026',format:'CSV',by:'Administrator',date:'28 Sep 2026',status:'Ready'},
+{name:'Weekly Timetable Report',category:'Operations',period:'September 2026',format:'PDF',by:'Administrator',date:'27 Sep 2026',status:'Ready'},
+{name:'Faculty Workload Report',category:'Operations',period:'August 2026',format:'XLSX',by:'Administrator',date:'31 Aug 2026',status:'Ready'},
+{name:'Monthly Consolidated Academic Report',category:'Management',period:'August 2026',format:'PDF',by:'Administrator',date:'31 Aug 2026',status:'Scheduled'}
+];
+function render(){
+ const q=document.getElementById('search').value.toLowerCase().trim(),cat=document.getElementById('category').value,fmt=document.getElementById('format').value,period=document.getElementById('period').value,status=document.getElementById('status').value;
+ const f=reports.filter(r=>(!q||`${r.name} ${r.by}`.toLowerCase().includes(q))&&(cat==='All Categories'||r.category===cat)&&(fmt==='All Formats'||r.format===fmt)&&(period==='All Periods'||r.period===period)&&(status==='All Status'||r.status===status));
+ document.getElementById('body').innerHTML=f.length?f.map((r,i)=>`<tr><td><div class="report-name">${r.name}</div><div class="muted">University Admin Report</div></td><td><span class="pill blue">${r.category}</span></td><td>${r.period}</td><td><b>${r.format}</b></td><td>${r.by}</td><td class="muted">${r.date}</td><td><span class="pill ${r.status==='Ready'?'green':'orange'}">${r.status}</span></td><td><div class="actions-cell"><button class="icon-btn" title="View" onclick="view(${reports.indexOf(r)})"><i class="fa-solid fa-eye"></i></button><button class="icon-btn" title="Export" onclick="download(${reports.indexOf(r)})"><i class="fa-solid fa-download"></i></button></div></td></tr>`).join(''):`<tr><td colspan="8" style="text-align:center;padding:35px;color:#8b94a5">No reports found.</td></tr>`;
+}
+function resetFilters(){document.getElementById('search').value='';document.querySelectorAll('.filters select').forEach(x=>x.selectedIndex=0);render();toast('Filters reset')}
+function openModal(){document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function quickGenerate(name){document.getElementById('mReport').value=name;openModal()}
+function generate(){
+ const name=document.getElementById('mReport').value,format=document.getElementById('mFormat').value;
+ reports.unshift({name,category:name.includes('Examination')?'Examination':name.includes('Resource')?'Resources':name.includes('Timetable')?'Operations':'Academic',period:'September 2026',format,by:'Administrator',date:'01 Oct 2026',status:'Ready'});
+ closeModal();render();toast(`${name} generated successfully`);
+}
+function view(i){toast(`${reports[i].name} · ${reports[i].format} · ${reports[i].status}`)}
+function download(i){
+ const r=reports[i],content=`BWU REPORT\n\nReport: ${r.name}\nCategory: ${r.category}\nPeriod: ${r.period}\nFormat: ${r.format}\nGenerated By: ${r.by}\nDate: ${r.date}\nStatus: ${r.status}\n`;
+ const blob=new Blob([content],{type:'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=r.name.toLowerCase().replaceAll(' ','-')+'.txt';a.click();URL.revokeObjectURL(a.href);toast('Report export prepared');
+}
+function exportReportList(){
+ let csv='Report,Category,Period,Format,Generated By,Date,Status\n'+reports.map(r=>[r.name,r.category,r.period,r.format,r.by,r.date,r.status].map(x=>`"${String(x).replaceAll('"','""')}"`).join(',')).join('\n');
+ let blob=new Blob([csv],{type:'text/csv'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='bwu-report-catalogue.csv';a.click();URL.revokeObjectURL(a.href);toast('Report catalogue exported');
+}
+function toast(m){let t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+render();
+</script>
+</body>
+</html>

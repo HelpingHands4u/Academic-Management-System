@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BWU Admin Window</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --sidebar: #111827;
+      --sidebar-2: #172033;
+      --accent: #4f46e5;
+      --accent-light: #eef2ff;
+      --text: #172033;
+      --muted: #64748b;
+      --border: #e5e7eb;
+      --bg: #f5f7fb;
+      --white: #ffffff;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    .app {
+      display: flex;
+      height: 100vh;
+      width: 100%;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 270px;
+      flex-shrink: 0;
+      background: var(--sidebar);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #202b3d;
+    }
+
+    .brand {
+      height: 76px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #253044;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: 15px;
+      letter-spacing: .2px;
+    }
+
+    .brand-text small {
+      color: #94a3b8;
+      font-size: 10px;
+    }
+
+    .nav {
+      padding: 16px 12px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .nav-label {
+      color: #64748b;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 9px 12px;
+      font-weight: 700;
+    }
+
+    .nav-btn {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: #cbd5e1;
+      padding: 10px 12px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      text-align: left;
+      cursor: pointer;
+      font: inherit;
+      font-size: 12px;
+      margin-bottom: 3px;
+    }
+
+    .nav-btn i {
+      width: 19px;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .nav-btn:hover {
+      background: var(--sidebar-2);
+      color: #fff;
+    }
+
+    .nav-btn.active {
+      background: #3730a3;
+      color: #fff;
+    }
+
+    .nav-btn.active i {
+      color: #fff;
+    }
+
+    .admin-card {
+      margin: 12px;
+      padding: 13px;
+      background: #172033;
+      border: 1px solid #273449;
+      border-radius: 12px;
+    }
+
+    .admin-avatar {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #312e81;
+      color: #c7d2fe;
+    }
+
+    .admin-avatar strong {
+      display: block;
+      font-size: 11px;
+    }
+
+    .admin-avatar small {
+      color: #94a3b8;
+      font-size: 9px;
+    }
+
+    .logout-btn {
+      margin-top: 11px;
+      width: 100%;
+      border: 1px solid #334155;
+      background: transparent;
+      color: #cbd5e1;
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      font: inherit;
+      font-size: 11px;
+    }
+
+    .logout-btn:hover {
+      background: #273449;
+      color: #fff;
+    }
+
+    /* MAIN */
+    .main {
+      min-width: 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      height: 70px;
+      flex-shrink: 0;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+    }
+
+    .page-heading {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .page-heading-icon {
+      width: 37px;
+      height: 37px;
+      border-radius: 9px;
+      background: var(--accent-light);
+      color: var(--accent);
+      display: grid;
+      place-items: center;
+    }
+
+    .page-heading h1 {
+      font-size: 16px;
+      margin: 0 0 3px;
+    }
+
+    .page-heading p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .system-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border: 1px solid #dbeafe;
+      background: #f8fbff;
+      border-radius: 8px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+    }
+
+    .content {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      background: var(--bg);
+    }
+
+    .module-frame {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+      background: var(--bg);
+    }
+
+    .loading {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: var(--bg);
+      z-index: 5;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .loading.hidden {
+      display: none;
+    }
+
+    .loading-box {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 22px;
+      box-shadow: 0 8px 30px rgba(15, 23, 42, .06);
+      text-align: center;
+    }
+
+    .loading-box i {
+      color: var(--accent);
+      margin-bottom: 8px;
+      font-size: 20px;
+    }
+
+    /* MOBILE */
+    .mobile-toggle {
+      display: none;
+      border: 0;
+      background: transparent;
+      font-size: 18px;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .sidebar-overlay {
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        position: fixed;
+        z-index: 30;
+        left: -280px;
+        top: 0;
+        bottom: 0;
+        transition: left .2s ease;
+      }
+
+      .sidebar.open {
+        left: 0;
+      }
+
+      .sidebar-overlay.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 20;
+        background: rgba(15, 23, 42, .45);
+      }
+
+      .mobile-toggle {
+        display: block;
+      }
+
+      .page-heading {
+        margin-left: 4px;
+      }
+
+      .topbar {
+        padding: 0 15px;
+      }
+
+      .top-right .system-status {
+        display: none;
+      }
+    }
+
+    @media (max-width: 550px) {
+      .page-heading p {
+        display: none;
+      }
+
+      .page-heading h1 {
+        font-size: 14px;
+      }
+
+      .top-right {
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+      <div class="brand-icon">
+        <i class="fa-solid fa-building-columns"></i>
+      </div>
+      <div class="brand-text">
+        <strong>BWU Admin Portal</strong>
+        <small>Academic Management System</small>
+      </div>
+    </div>
+
+    <nav class="nav">
+
+      <div class="nav-label">Main</div>
+
+      <button class="nav-btn active"
+              data-page="admin-dashboard.html"
+              data-title="Admin Dashboard"
+              data-subtitle="System-wide academic administration overview"
+              data-icon="fa-gauge-high">
+        <i class="fa-solid fa-gauge-high"></i>
+        <span>Admin Dashboard</span>
+      </button>
+
+      <div class="nav-label">Academic Management</div>
+
+      <button class="nav-btn"
+              data-page="student-management.html"
+              data-title="Student Management"
+              data-subtitle="Manage student records and academic profiles"
+              data-icon="fa-user-graduate">
+        <i class="fa-solid fa-user-graduate"></i>
+        <span>Student Management</span>
+      </button>
+
+      <button class="nav-btn"
+              data-page="faculty-management.html"
+              data-title="Faculty Management"
+              data-subtitle="Manage faculty records, roles and status"
+              data-icon="fa-chalkboard-user">
+        <i class="fa-solid fa-chalkboard-user"></i>
+        <span>Faculty Management</span>
+      </button>
+
+      <button class="nav-btn"
+              data-page="course-management.html"
+              data-title="Course Management"
+              data-subtitle="Manage courses, credits, types and status"
+              data-icon="fa-book-open">
+        <i class="fa-solid fa-book-open"></i>
+        <span>Course Management</span>
+      </button>
+
+      <button class="nav-btn"
+              data-page="faculty-course-assignment.html"
+              data-title="Faculty → Course Assignment"
+              data-subtitle="Assign faculty members to academic courses"
+              data-icon="fa-link">
+        <i class="fa-solid fa-link"></i>
+        <span>Faculty → Course Assignment</span>
+      </button>
+
+      <button class="nav-btn"
+              data-page="class-timetable-management.html"
+              data-title="Class & Timetable Management"
+              data-subtitle="Manage classes, rooms, faculty and schedules"
+              data-icon="fa-calendar-days">
+        <i class="fa-solid fa-calendar-days"></i>
+        <span>Class & Timetable</span>
+      </button>
+
+      <button class="nav-btn"
+              data-page="attendance-overview.html"
+              data-title="Attendance Overview"
+              data-subtitle="Review attendance across academic groups"
+              data-icon="fa-calendar-check">
+        <i class="fa-solid fa-calendar-check"></i>
+        <span>Attendance Overview</span>
+      </button>
+
+      <button class="nav-btn"
+              data-page="marks-examination.html"
+              data-title="Marks & Examination"
+              data-subtitle="Manage assessments, marks and examination records"
+              data-icon="fa-file-pen">
+        <i class="fa-solid fa-file-pen"></i>
+        <span>Marks & Examination</span>
+      </button>
+
+      <button class="nav-btn"
+              data-page="syllabus-monitoring.html"
+              data-title="Syllabus Monitoring"
+              data-subtitle="Track syllabus completion and pending academic work"
+              data-icon="fa-chart-pie">
+        <i class="fa-solid fa-chart-pie"></i>
+        <span>Syllabus Monitoring</span>
+      </button>
+
+      <button class="nav-btn"
+              data-page="academic-resources.html"
+              data-title="Academic Resources"
+              data-subtitle="Manage academic PDF and DOCX resources"
+              data-icon="fa-folder-open">
+        <i class="fa-solid fa-folder-open"></i>
+        <span>Academic Resources</span>
+      </button>
+
+      <div class="nav-label">Administration</div>
+
+      <button class="nav-btn"
+              data-page="reports.html"
+              data-title="Reports"
+              data-subtitle="Generate academic and administrative reports"
+              data-icon="fa-file-lines">
+        <i class="fa-solid fa-file-lines"></i>
+        <span>Reports</span>
+      </button>
+
+      <button class="nav-btn"
+              data-page="user-access-control.html"
+              data-title="User & Access Control"
+              data-subtitle="Manage accounts, roles and permissions"
+              data-icon="fa-user-lock">
+        <i class="fa-solid fa-user-lock"></i>
+        <span>User & Access Control</span>
+      </button>
+
+      <button class="nav-btn"
+              data-page="system-settings.html"
+              data-title="System Settings"
+              data-subtitle="Configure academic and system preferences"
+              data-icon="fa-gear">
+        <i class="fa-solid fa-gear"></i>
+        <span>System Settings</span>
+      </button>
+
+    </nav>
+
+    <div class="admin-card">
+      <div class="admin-avatar">
+        <div class="avatar">
+          <i class="fa-solid fa-user-shield"></i>
+        </div>
+        <div>
+          <strong>System Administrator</strong>
+          <small>BWU_ADMIN_001</small>
+        </div>
+      </div>
+
+      <button class="logout-btn" onclick="logout()">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        &nbsp; Logout
+      </button>
+    </div>
+
+  </aside>
+
+  <div class="sidebar-overlay" id="overlay"></div>
+
+  <section class="main">
+
+    <header class="topbar">
+
+      <div class="page-heading">
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Open menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div class="page-heading-icon">
+          <i class="fa-solid fa-gauge-high" id="pageIcon"></i>
+        </div>
+
+        <div>
+          <h1 id="pageTitle">Admin Dashboard</h1>
+          <p id="pageSubtitle">System-wide academic administration overview</p>
+        </div>
+      </div>
+
+      <div class="top-right">
+        <div class="system-status">
+          <span class="status-dot"></span>
+          System Operational
+        </div>
+        <span>Administrator</span>
+      </div>
+
+    </header>
+
+    <main class="content">
+
+      <div class="loading" id="loading">
+        <div class="loading-box">
+          <i class="fa-solid fa-spinner fa-spin"></i>
+          <div>Loading module...</div>
+        </div>
+      </div>
+
+      <iframe
+        id="moduleFrame"
+        class="module-frame"
+        src="admin-dashboard.html"
+        title="Admin module">
+      </iframe>
+
+    </main>
+
+  </section>
+</div>
+
+<script>
+  const navButtons = document.querySelectorAll(".nav-btn");
+  const frame = document.getElementById("moduleFrame");
+  const loading = document.getElementById("loading");
+  const pageTitle = document.getElementById("pageTitle");
+  const pageSubtitle = document.getElementById("pageSubtitle");
+  const pageIcon = document.getElementById("pageIcon");
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("overlay");
+  const mobileToggle = document.getElementById("mobileToggle");
+
+  function loadModule(button) {
+    const page = button.dataset.page;
+    const title = button.dataset.title;
+    const subtitle = button.dataset.subtitle;
+    const icon = button.dataset.icon;
+
+    navButtons.forEach(btn => btn.classList.remove("active"));
+    button.classList.add("active");
+
+    pageTitle.textContent = title;
+    pageSubtitle.textContent = subtitle;
+    pageIcon.className = "fa-solid " + icon;
+
+    loading.classList.remove("hidden");
+    frame.src = page;
+
+    if (window.innerWidth <= 900) {
+      sidebar.classList.remove("open");
+      overlay.classList.remove("show");
+    }
+  }
+
+  frame.addEventListener("load", () => {
+    loading.classList.add("hidden");
+  });
+
+  navButtons.forEach(button => {
+    button.addEventListener("click", () => loadModule(button));
+  });
+
+  mobileToggle.addEventListener("click", () => {
+    sidebar.classList.add("open");
+    overlay.classList.add("show");
+  });
+
+  overlay.addEventListener("click", () => {
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
+  });
+
+  function logout() {
+    const confirmed = confirm("Are you sure you want to logout from the Admin Window?");
+    if (!confirmed) return;
+
+    /*
+      Change this filename later if your actual Admin Login page
+      has a different filename.
+    */
+    window.location.href = "admin-login.html";
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BWU Admin — Marks & Examination</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    :root{
+      --bg:#f4f6fb; --navy:#111827; --navy2:#182235; --purple:#6558d3;
+      --purple2:#7c70e8; --text:#182033; --muted:#697386; --line:#e6e9f0;
+      --white:#fff; --green:#159a68; --green-bg:#eaf8f2; --orange:#c77b08;
+      --orange-bg:#fff5df; --red:#d34d5c; --red-bg:#ffedf0; --blue:#3478d4;
+      --shadow:0 12px 35px rgba(25,35,60,.08);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}
+    .topbar{height:70px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 34px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.2px}
+    .brand-mark{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#7569ea,#4d42b6);display:grid;place-items:center;font-size:16px}
+    .brand span{font-size:18px}
+    .admin-info{display:flex;align-items:center;gap:12px;color:#dce2ef;font-size:13px}
+    .avatar{width:38px;height:38px;border-radius:50%;background:#2c3850;display:grid;place-items:center;color:#fff}
+    .wrap{max-width:1450px;margin:0 auto;padding:30px 28px 50px}
+    .hero{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:24px}
+    .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--purple);font-weight:800;margin-bottom:8px}
+    h1{margin:0;font-size:30px;letter-spacing:-.7px}
+    .hero p{margin:9px 0 0;color:var(--muted);font-size:14px}
+    .hero-actions{display:flex;gap:10px}
+    button,.btn{border:0;font:inherit;cursor:pointer}
+    .btn{display:inline-flex;align-items:center;gap:8px;border-radius:10px;padding:11px 15px;font-size:13px;font-weight:700}
+    .btn-primary{background:var(--purple);color:#fff}.btn-primary:hover{background:#5549c6}
+    .btn-light{background:#fff;border:1px solid var(--line);color:#3f485c}
+    .grid-kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}
+    .kpi{background:#fff;border:1px solid var(--line);border-radius:15px;padding:20px;box-shadow:var(--shadow)}
+    .kpi-top{display:flex;justify-content:space-between;align-items:center}
+    .kpi-label{font-size:12px;color:var(--muted);font-weight:700}
+    .kpi-icon{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:#f0edff;color:var(--purple)}
+    .kpi-value{font-size:25px;font-weight:800;margin-top:13px}
+    .kpi-note{font-size:11px;color:#8490a3;margin-top:4px}
+    .panel{background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:20px}
+    .panel-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:15px}
+    .panel-title{font-size:15px;font-weight:800}.panel-sub{font-size:12px;color:var(--muted);margin-top:4px}
+    .filters{padding:18px 20px;display:grid;grid-template-columns:1.25fr repeat(5,1fr) auto;gap:11px;border-bottom:1px solid var(--line)}
+    label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.55px;color:#788296;display:block;margin:0 0 6px}
+    input,select{width:100%;height:40px;border:1px solid #dfe3eb;border-radius:9px;padding:0 11px;color:#293247;background:#fff;font:inherit;font-size:12px;outline:none}
+    input:focus,select:focus{border-color:#9d95ec;box-shadow:0 0 0 3px rgba(101,88,211,.08)}
+    .filter-actions{display:flex;align-items:flex-end;gap:7px}
+    .small-btn{height:40px;padding:0 12px;border-radius:9px;font-size:12px;font-weight:700;background:#f1efff;color:#574bc8}
+    .table-wrap{overflow:auto}
+    table{width:100%;border-collapse:collapse;min-width:1040px}
+    th{background:#fafbfe;color:#788296;font-size:10px;text-transform:uppercase;letter-spacing:.55px;text-align:left;padding:12px 16px;border-bottom:1px solid var(--line)}
+    td{padding:14px 16px;border-bottom:1px solid #edf0f5;font-size:12px;vertical-align:middle}
+    tr:last-child td{border-bottom:0}
+    .code{font-weight:800;color:#353d52}.student{font-weight:700}.muted{color:var(--muted)}
+    .pill{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:800}
+    .pill-green{color:var(--green);background:var(--green-bg)}
+    .pill-orange{color:var(--orange);background:var(--orange-bg)}
+    .pill-red{color:var(--red);background:var(--red-bg)}
+    .pill-blue{color:var(--blue);background:#edf5ff}
+    .marks{font-weight:800}.empty{color:#a2a9b7}
+    .actions{display:flex;gap:6px}
+    .icon-btn{width:31px;height:31px;border:1px solid var(--line);background:#fff;border-radius:8px;color:#5d6679}
+    .icon-btn:hover{background:#f5f3ff;color:var(--purple)}
+    .bottom-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px}
+    .summary{padding:20px}
+    .progress-row{margin-bottom:18px}.progress-row:last-child{margin-bottom:0}
+    .progress-meta{display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:7px}
+    .bar{height:8px;border-radius:99px;background:#edf0f5;overflow:hidden}.fill{height:100%;border-radius:99px;background:var(--purple)}
+    .exam-list{padding:8px 20px 15px}
+    .exam-item{display:flex;justify-content:space-between;gap:15px;padding:15px 0;border-bottom:1px solid #edf0f5}
+    .exam-item:last-child{border-bottom:0}
+    .exam-name{font-size:12px;font-weight:800}.exam-meta{font-size:11px;color:var(--muted);margin-top:4px}
+    .date-box{text-align:center;min-width:58px}.date-box strong{display:block;font-size:16px}.date-box span{font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase}
+    .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(10,15,27,.55);z-index:20;align-items:center;justify-content:center;padding:20px}
+    .modal-backdrop.show{display:flex}
+    .modal{background:#fff;border-radius:16px;width:min(720px,100%);max-height:90vh;overflow:auto;box-shadow:0 25px 70px rgba(0,0,0,.22)}
+    .modal-head{padding:19px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+    .modal-head h2{font-size:17px;margin:0}.close{background:none;font-size:20px;color:#778195}
+    .modal-body{padding:22px}
+    .form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
+    .form-full{grid-column:1/-1}
+    .modal-foot{padding:15px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:9px}
+    .toast{position:fixed;right:24px;bottom:24px;background:#182033;color:#fff;padding:12px 16px;border-radius:10px;font-size:12px;display:none;z-index:30;box-shadow:var(--shadow)}
+    .toast.show{display:block}
+    @media(max-width:1100px){.filters{grid-template-columns:repeat(3,1fr)}.filter-actions{align-items:center}.grid-kpi{grid-template-columns:repeat(2,1fr)}.bottom-grid{grid-template-columns:1fr}}
+    @media(max-width:700px){.topbar{padding:0 16px}.admin-info span{display:none}.wrap{padding:22px 15px 40px}.hero{display:block}.hero-actions{margin-top:15px}.grid-kpi{grid-template-columns:1fr}.filters{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.form-full{grid-column:auto}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><div class="brand-mark"><i class="fa-solid fa-building-columns"></i></div><span>BWU Admin</span></div>
+    <div class="admin-info"><span>Administrator · BWU_ADMIN_001</span><div class="avatar"><i class="fa-solid fa-user-shield"></i></div></div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Admin Module 08</div>
+        <h1>Marks & Examination</h1>
+        <p>Manage examination schedules, assessment marks, publication status and student academic performance.</p>
+      </div>
+      <div class="hero-actions">
+        <button class="btn btn-light" onclick="exportMarks()"><i class="fa-solid fa-file-export"></i> Export</button>
+        <button class="btn btn-primary" onclick="openModal()"><i class="fa-solid fa-plus"></i> Enter Marks</button>
+      </div>
+    </section>
+
+    <section class="grid-kpi">
+      <div class="kpi"><div class="kpi-top"><span class="kpi-label">Examinations</span><div class="kpi-icon"><i class="fa-solid fa-calendar-days"></i></div></div><div class="kpi-value">08</div><div class="kpi-note">Academic year 2026–27</div></div>
+      <div class="kpi"><div class="kpi-top"><span class="kpi-label">Mark Entries</span><div class="kpi-icon"><i class="fa-solid fa-pen-to-square"></i></div></div><div class="kpi-value">9,842</div><div class="kpi-note">Across active assessments</div></div>
+      <div class="kpi"><div class="kpi-top"><span class="kpi-label">Published</span><div class="kpi-icon"><i class="fa-solid fa-circle-check"></i></div></div><div class="kpi-value">06</div><div class="kpi-note">Results released</div></div>
+      <div class="kpi"><div class="kpi-top"><span class="kpi-label">Pending Review</span><div class="kpi-icon"><i class="fa-solid fa-hourglass-half"></i></div></div><div class="kpi-value">12</div><div class="kpi-note">Entries require action</div></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div><div class="panel-title">Assessment & Marks Register</div><div class="panel-sub">Filter examination records by academic group and assessment.</div></div>
+        <span class="pill pill-blue"><i class="fa-solid fa-lock" style="margin-right:5px"></i> Admin access</span>
+      </div>
+      <div class="filters">
+        <div><label>Search</label><input id="search" placeholder="Student code, name or course..." oninput="renderTable()"></div>
+        <div><label>Department</label><select id="dept" onchange="renderTable()"><option>All Departments</option><option>CSE Cyber Security</option><option>CSE Data Science</option></select></div>
+        <div><label>Batch</label><select id="batch" onchange="renderTable()"><option>All Batches</option><option>CYS26</option><option>DS26</option></select></div>
+        <div><label>Section</label><select id="section" onchange="renderTable()"><option>All Sections</option><option>A</option><option>B</option></select></div>
+        <div><label>Semester</label><select id="semester" onchange="renderTable()"><option>All Semesters</option><option>III</option><option>IV</option></select></div>
+        <div><label>Assessment</label><select id="assessment" onchange="renderTable()"><option>All Assessments</option><option>CT01</option><option>CT02</option><option>Term End</option></select></div>
+        <div class="filter-actions"><button class="small-btn" onclick="resetFilters()"><i class="fa-solid fa-rotate-left"></i> Reset</button></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Student</th><th>Course</th><th>Assessment</th><th>Max</th><th>Marks</th><th>Percentage</th><th>Status</th><th>Updated</th><th>Action</th></tr></thead>
+          <tbody id="marksBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="bottom-grid">
+      <div class="panel">
+        <div class="panel-head"><div><div class="panel-title">Examination Schedule</div><div class="panel-sub">Upcoming and recently completed assessments.</div></div></div>
+        <div class="exam-list">
+          <div class="exam-item"><div><div class="exam-name">Continuous Test — CT02</div><div class="exam-meta">Semester III · CSE Cyber Security · Section B</div></div><div class="date-box"><strong>18</strong><span>Nov 2026</span></div></div>
+          <div class="exam-item"><div><div class="exam-name">Term End Examination — III</div><div class="exam-meta">Theory papers · Semester III</div></div><div class="date-box"><strong>07</strong><span>Dec 2026</span></div></div>
+          <div class="exam-item"><div><div class="exam-name">Practical / Lab Examination</div><div class="exam-meta">Laboratory courses · Semester III</div></div><div class="date-box"><strong>14</strong><span>Dec 2026</span></div></div>
+          <div class="exam-item"><div><div class="exam-name">Result Publication</div><div class="exam-meta">Semester III consolidated results</div></div><div class="date-box"><strong>10</strong><span>Jan 2027</span></div></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><div><div class="panel-title">Performance Overview</div><div class="panel-sub">Current Semester III assessment completion.</div></div></div>
+        <div class="summary">
+          <div class="progress-row"><div class="progress-meta"><span>CT01 Marks Entry</span><span>96%</span></div><div class="bar"><div class="fill" style="width:96%"></div></div></div>
+          <div class="progress-row"><div class="progress-meta"><span>CT02 Marks Entry</span><span>71%</span></div><div class="bar"><div class="fill" style="width:71%"></div></div></div>
+          <div class="progress-row"><div class="progress-meta"><span>Lab Assessment</span><span>88%</span></div><div class="bar"><div class="fill" style="width:88%"></div></div></div>
+          <div class="progress-row"><div class="progress-meta"><span>Result Verification</span><span>64%</span></div><div class="bar"><div class="fill" style="width:64%"></div></div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="modal">
+    <div class="modal">
+      <div class="modal-head"><div><h2>Enter / Update Marks</h2><div class="panel-sub">Add an assessment mark to the examination register.</div></div><button class="close" onclick="closeModal()">&times;</button></div>
+      <div class="modal-body">
+        <div class="form-grid">
+          <div><label>Student Code</label><input id="mStudent" value="BWU-CYS-26-001"></div>
+          <div><label>Student Name</label><input id="mName" value="Student 01"></div>
+          <div><label>Course</label><select id="mCourse"><option>BBS00008 — Discrete Mathematics</option><option>BTY30101 — Computer Organization and Architecture</option><option>BTY30102 — Database Management System</option><option>BES00023 — Applied Data Structure and Algorithm</option><option>BTY38101 — Mini Project-I</option></select></div>
+          <div><label>Assessment</label><select id="mAssessment"><option>CT01</option><option>CT02</option><option>Term End</option><option>Practical</option></select></div>
+          <div><label>Maximum Marks</label><input id="mMax" type="number" value="20"></div>
+          <div><label>Marks Obtained</label><input id="mMarks" type="number" value="16"></div>
+          <div><label>Semester</label><select><option>III</option><option>IV</option></select></div>
+          <div><label>Publication Status</label><select><option>Draft</option><option>Verified</option><option>Published</option></select></div>
+          <div class="form-full"><label>Remarks</label><input id="mRemark" placeholder="Optional examination remark"></div>
+        </div>
+      </div>
+      <div class="modal-foot"><button class="btn btn-light" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="saveMark()"><i class="fa-solid fa-check"></i> Save Marks</button></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const rows = [
+      {code:'BWU-CYS-26-001',name:'Student 01',dept:'CSE Cyber Security',batch:'CYS26',section:'B',sem:'III',course:'BBS00008 — Discrete Mathematics',assess:'CT01',max:20,marks:14,date:'30 Sep 2026',status:'Published'},
+      {code:'BWU-CYS-26-001',name:'Student 01',dept:'CSE Cyber Security',batch:'CYS26',section:'B',sem:'III',course:'BTY30101 — Computer Organization and Architecture',assess:'CT01',max:20,marks:15,date:'30 Sep 2026',status:'Published'},
+      {code:'BWU-CYS-26-001',name:'Student 01',dept:'CSE Cyber Security',batch:'CYS26',section:'B',sem:'III',course:'BTY30102 — Database Management System',assess:'CT01',max:20,marks:17,date:'30 Sep 2026',status:'Published'},
+      {code:'BWU-CYS-26-002',name:'Student 02',dept:'CSE Cyber Security',batch:'CYS26',section:'B',sem:'III',course:'BES00023 — Applied Data Structure and Algorithm',assess:'CT01',max:20,marks:16,date:'30 Sep 2026',status:'Published'},
+      {code:'BWU-CYS-26-003',name:'Student 03',dept:'CSE Cyber Security',batch:'CYS26',section:'B',sem:'III',course:'BTY39104 — COA Lab',assess:'CT01',max:20,marks:18,date:'01 Oct 2026',status:'Verified'},
+      {code:'BWU-CYS-26-004',name:'Student 04',dept:'CSE Cyber Security',batch:'CYS26',section:'B',sem:'III',course:'BTY39105 — Database Management System Lab',assess:'CT01',max:20,marks:17,date:'01 Oct 2026',status:'Verified'},
+      {code:'BWU-CYS-26-005',name:'Student 05',dept:'CSE Cyber Security',batch:'CYS26',section:'B',sem:'III',course:'BES09024 — ADS Lab',assess:'CT01',max:20,marks:16,date:'01 Oct 2026',status:'Draft'},
+      {code:'BWU-DS-26-001',name:'Student 01',dept:'CSE Data Science',batch:'DS26',section:'A',sem:'III',course:'Data Science Fundamentals',assess:'CT01',max:20,marks:15,date:'29 Sep 2026',status:'Published'}
+    ];
+
+    function badge(status){
+      const cls = status==='Published'?'pill-green':status==='Verified'?'pill-blue':'pill-orange';
+      return `<span class="pill ${cls}">${status}</span>`;
+    }
+    function renderTable(){
+      const q=document.getElementById('search').value.toLowerCase().trim();
+      const dept=document.getElementById('dept').value, batch=document.getElementById('batch').value;
+      const section=document.getElementById('section').value, sem=document.getElementById('semester').value;
+      const assess=document.getElementById('assessment').value;
+      const filtered=rows.filter(r=>
+        (!q || `${r.code} ${r.name} ${r.course}`.toLowerCase().includes(q)) &&
+        (dept==='All Departments'||r.dept===dept) &&
+        (batch==='All Batches'||r.batch===batch) &&
+        (section==='All Sections'||r.section===section) &&
+        (sem==='All Semesters'||r.sem===sem) &&
+        (assess==='All Assessments'||r.assess===assess)
+      );
+      const body=document.getElementById('marksBody');
+      body.innerHTML=filtered.length ? filtered.map((r,i)=>{
+        const pct=Math.round((r.marks/r.max)*100);
+        const status=pct>=75?'Good':pct>=60?'Watch':'Low';
+        const cls=status==='Good'?'pill-green':status==='Watch'?'pill-orange':'pill-red';
+        return `<tr>
+          <td><div class="student">${r.name}</div><div class="muted">${r.code}</div></td>
+          <td>${r.course}</td><td><span class="pill pill-blue">${r.assess}</span></td>
+          <td>${r.max}</td><td class="marks">${r.marks}</td><td>${pct}%</td>
+          <td><span class="pill ${cls}">${status}</span> ${badge(r.status)}</td>
+          <td class="muted">${r.date}</td>
+          <td><div class="actions"><button class="icon-btn" title="Edit" onclick="editRow(${rows.indexOf(r)})"><i class="fa-solid fa-pen"></i></button><button class="icon-btn" title="View" onclick="viewRow(${rows.indexOf(r)})"><i class="fa-solid fa-eye"></i></button></div></td>
+        </tr>`;
+      }).join('') : `<tr><td colspan="9" style="text-align:center;padding:35px;color:#8b94a5">No examination records found.</td></tr>`;
+    }
+    function resetFilters(){
+      ['search'].forEach(id=>document.getElementById(id).value='');
+      document.querySelectorAll('.filters select').forEach(s=>s.selectedIndex=0);
+      renderTable(); toast('Filters reset');
+    }
+    function openModal(){document.getElementById('modal').classList.add('show')}
+    function closeModal(){document.getElementById('modal').classList.remove('show')}
+    function saveMark(){
+      const marks=Number(document.getElementById('mMarks').value), max=Number(document.getElementById('mMax').value);
+      if(!document.getElementById('mStudent').value.trim() || !max || marks<0 || marks>max){toast('Please enter valid student and marks details');return}
+      rows.unshift({
+        code:document.getElementById('mStudent').value.trim(),name:document.getElementById('mName').value.trim()||'Student',
+        dept:'CSE Cyber Security',batch:'CYS26',section:'B',sem:'III',
+        course:document.getElementById('mCourse').value,assess:document.getElementById('mAssessment').value,max,marks,date:'01 Oct 2026',status:'Draft'
+      });
+      closeModal(); renderTable(); toast('Marks saved as Draft');
+    }
+    function editRow(i){
+      const r=rows[i]; document.getElementById('mStudent').value=r.code; document.getElementById('mName').value=r.name;
+      document.getElementById('mMax').value=r.max; document.getElementById('mMarks').value=r.marks;
+      openModal();
+    }
+    function viewRow(i){
+      const r=rows[i]; toast(`${r.name} · ${r.course} · ${r.assess}: ${r.marks}/${r.max}`);
+    }
+    function exportMarks(){
+      const headers=['Student Code','Student Name','Department','Batch','Section','Semester','Course','Assessment','Max Marks','Marks','Status'];
+      const csv=[headers,...rows.map(r=>[r.code,r.name,r.dept,r.batch,r.section,r.sem,r.course,r.assess,r.max,r.marks,r.status])]
+        .map(row=>row.map(v=>`"${String(v).replaceAll('"','""')}"`).join(',')).join('\n');
+      const blob=new Blob([csv],{type:'text/csv'}), a=document.createElement('a');
+      a.href=URL.createObjectURL(blob);a.download='bwu-marks-examination-register.csv';a.click();URL.revokeObjectURL(a.href);
+      toast('Marks register exported');
+    }
+    function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+    document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+    renderTable();
+  </script>
+</body>
+</html>
