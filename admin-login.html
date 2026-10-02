@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BWU Admin Login</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Inter", sans-serif;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(79, 70, 229, .18), transparent 30%),
+        radial-gradient(circle at 85% 85%, rgba(59, 130, 246, .13), transparent 30%),
+        #0b1120;
+      color: #172033;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .login-wrapper {
+      width: 100%;
+      max-width: 950px;
+      min-height: 570px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: #fff;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, .32);
+    }
+
+    .info-panel {
+      position: relative;
+      padding: 48px;
+      background: linear-gradient(145deg, #111827, #172554);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .info-panel::before,
+    .info-panel::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .info-panel::before {
+      width: 260px;
+      height: 260px;
+      background: rgba(79, 70, 229, .16);
+      top: -100px;
+      right: -100px;
+    }
+
+    .info-panel::after {
+      width: 220px;
+      height: 220px;
+      background: rgba(59, 130, 246, .10);
+      bottom: -100px;
+      left: -90px;
+    }
+
+    .brand {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 43px;
+      height: 43px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: #4f46e5;
+      font-size: 18px;
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 17px;
+    }
+
+    .brand small {
+      display: block;
+      margin-top: 3px;
+      color: #94a3b8;
+      font-size: 10px;
+    }
+
+    .info-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .info-content h1 {
+      margin: 0 0 14px;
+      font-size: 31px;
+      line-height: 1.15;
+      letter-spacing: -.8px;
+    }
+
+    .info-content p {
+      margin: 0;
+      color: #cbd5e1;
+      font-size: 13px;
+      line-height: 1.75;
+      max-width: 360px;
+    }
+
+    .security-note {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      color: #aebbd0;
+      font-size: 10px;
+      line-height: 1.55;
+    }
+
+    .security-note i {
+      color: #818cf8;
+      margin-top: 2px;
+    }
+
+    .form-panel {
+      padding: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+    }
+
+    .form-box {
+      width: 100%;
+      max-width: 350px;
+    }
+
+    .form-box h2 {
+      margin: 0 0 7px;
+      font-size: 25px;
+      letter-spacing: -.5px;
+    }
+
+    .form-box > p {
+      margin: 0 0 28px;
+      color: #64748b;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .field {
+      margin-bottom: 17px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      color: #334155;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap > i {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .input-wrap input {
+      width: 100%;
+      height: 45px;
+      border: 1px solid #dbe1ea;
+      border-radius: 9px;
+      outline: none;
+      padding: 0 42px 0 39px;
+      font: inherit;
+      font-size: 12px;
+      color: #172033;
+      background: #fff;
+    }
+
+    .input-wrap input:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, .10);
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 0;
+      padding: 3px;
+      background: transparent;
+      color: #94a3b8;
+      cursor: pointer;
+    }
+
+    .password-toggle:hover {
+      color: #4f46e5;
+    }
+
+    .login-btn {
+      width: 100%;
+      height: 46px;
+      border: 0;
+      border-radius: 9px;
+      background: #4f46e5;
+      color: #fff;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+
+    .login-btn:hover {
+      background: #4338ca;
+    }
+
+    .message {
+      display: none;
+      margin-top: 13px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .message.error {
+      display: block;
+      color: #b91c1c;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+    }
+
+    .demo-info {
+      margin-top: 19px;
+      padding: 12px;
+      border-radius: 9px;
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      color: #64748b;
+      font-size: 10px;
+      line-height: 1.55;
+    }
+
+    .demo-info strong {
+      color: #334155;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 19px;
+      color: #64748b;
+      text-decoration: none;
+      font-size: 10px;
+    }
+
+    .back-link:hover {
+      color: #4f46e5;
+    }
+
+    @media (max-width: 760px) {
+      .login-wrapper {
+        grid-template-columns: 1fr;
+        max-width: 460px;
+      }
+
+      .info-panel {
+        min-height: 250px;
+        padding: 30px;
+      }
+
+      .info-content h1 {
+        font-size: 25px;
+      }
+
+      .security-note {
+        margin-top: 25px;
+      }
+
+      .form-panel {
+        padding: 35px 28px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      body { padding: 12px; }
+
+      .info-panel {
+        padding: 25px;
+      }
+
+      .form-panel {
+        padding: 30px 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-wrapper">
+
+    <section class="info-panel">
+
+      <div class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-building-columns"></i>
+        </div>
+        <div>
+          <strong>BWU Admin Portal</strong>
+          <small>Academic Management System</small>
+        </div>
+      </div>
+
+      <div class="info-content">
+        <h1>Administrator<br>Sign In</h1>
+        <p>
+          Access the central administrative environment to manage academic
+          records, faculty, students, courses, examinations, resources and
+          system settings.
+        </p>
+      </div>
+
+      <div class="security-note">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span>Authorized administrator access only. Please use your assigned administrator credentials.</span>
+      </div>
+
+    </section>
+
+    <section class="form-panel">
+
+      <div class="form-box">
+
+        <h2>Welcome back</h2>
+        <p>Sign in to continue to the BWU Admin Window.</p>
+
+        <form id="adminLoginForm">
+
+          <div class="field">
+            <label for="adminCode">Administrator Code</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-id-badge"></i>
+              <input
+                type="text"
+                id="adminCode"
+                placeholder="Enter administrator code"
+                autocomplete="username"
+                required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="adminPassword">Password</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-lock"></i>
+              <input
+                type="password"
+                id="adminPassword"
+                placeholder="Enter password"
+                autocomplete="current-password"
+                required>
+
+              <button type="button" class="password-toggle" id="togglePassword" aria-label="Show password">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="login-btn">
+            <i class="fa-solid fa-right-to-bracket"></i>
+            &nbsp; Sign In
+          </button>
+
+          <div class="message" id="loginMessage"></div>
+
+        </form>
+
+        <div class="demo-info">
+          <strong>Demo administrator</strong><br>
+          Code: <strong>BWU_ADMIN_001</strong><br>
+          Password: <strong>admin123</strong>
+        </div>
+
+        <a href="index.html" class="back-link">
+          <i class="fa-solid fa-arrow-left"></i>
+          Back to Home
+        </a>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <script>
+    const form = document.getElementById("adminLoginForm");
+    const codeInput = document.getElementById("adminCode");
+    const passwordInput = document.getElementById("adminPassword");
+    const message = document.getElementById("loginMessage");
+    const togglePassword = document.getElementById("togglePassword");
+
+    togglePassword.addEventListener("click", () => {
+      const isPassword = passwordInput.type === "password";
+
+      passwordInput.type = isPassword ? "text" : "password";
+
+      togglePassword.innerHTML = isPassword
+        ? '<i class="fa-solid fa-eye-slash"></i>'
+        : '<i class="fa-solid fa-eye"></i>';
+
+      togglePassword.setAttribute(
+        "aria-label",
+        isPassword ? "Hide password" : "Show password"
+      );
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const code = codeInput.value.trim();
+      const password = passwordInput.value;
+
+      /*
+        FRONTEND DEMO AUTHENTICATION ONLY.
+        Replace this later with real backend authentication.
+      */
+      if (code === "BWU_ADMIN_001" && password === "admin123") {
+        sessionStorage.setItem("bwuAdminLoggedIn", "true");
+        sessionStorage.setItem("bwuAdminCode", code);
+
+        window.location.href = "admin-window.html";
+        return;
+      }
+
+      message.textContent = "Invalid administrator code or password.";
+      message.className = "message error";
+    });
+  </script>
+
+</body>
+</html>

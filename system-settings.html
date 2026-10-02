@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BWU Admin — System Settings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{
+ --bg:#f4f6fb;--navy:#111827;--text:#182033;--muted:#6c7588;--purple:#6558d3;
+ --line:#e5e8ef;--green:#159a68;--greenbg:#eaf8f2;--orange:#c77b08;--orangebg:#fff5df;
+ --red:#d34d5c;--redbg:#ffedf0;--blue:#3478d4;--bluebg:#edf5ff;
+ --shadow:0 12px 35px rgba(25,35,60,.08)
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}
+.topbar{height:70px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 34px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800}.brand-mark{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#7569ea,#4d42b6);display:grid;place-items:center}.brand span{font-size:18px}
+.admin{display:flex;align-items:center;gap:12px;color:#dce2ef;font-size:13px}.avatar{width:38px;height:38px;border-radius:50%;background:#2c3850;display:grid;place-items:center}
+.wrap{max-width:1450px;margin:auto;padding:30px 28px 50px}
+.hero{display:flex;justify-content:space-between;gap:20px;margin-bottom:24px}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--purple);font-weight:800;margin-bottom:8px}
+h1{margin:0;font-size:30px;letter-spacing:-.7px}.hero p{margin:9px 0 0;color:var(--muted);font-size:14px}.actions{display:flex;gap:10px}
+.btn{border:0;border-radius:10px;padding:11px 15px;font:700 13px Inter;cursor:pointer;display:inline-flex;gap:8px;align-items:center}.primary{background:var(--purple);color:#fff}.primary:hover{background:#5549c6}.light{background:#fff;border:1px solid var(--line);color:#3f485c}
+.statusbar{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--line);border-radius:13px;padding:14px 18px;margin-bottom:20px;box-shadow:var(--shadow)}
+.status-left{display:flex;align-items:center;gap:11px}.status-dot{width:10px;height:10px;border-radius:50%;background:var(--green)}.status-left strong{font-size:12px}.status-left span{font-size:11px;color:var(--muted);margin-left:4px}
+.save-note{font-size:11px;color:var(--muted)}
+.layout{display:grid;grid-template-columns:245px 1fr;gap:20px;align-items:start}
+.sidebar{background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow);padding:10px;position:sticky;top:20px}
+.side-item{width:100%;border:0;background:#fff;text-align:left;border-radius:9px;padding:11px 12px;color:#667085;font:600 12px Inter;cursor:pointer;display:flex;align-items:center;gap:10px;margin-bottom:3px}.side-item i{width:18px;text-align:center}.side-item.active{background:#f0edff;color:var(--purple)}.side-item:hover{background:#f7f6ff;color:var(--purple)}
+.content-panel{display:none}.content-panel.active{display:block}
+.panel{background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:20px}
+.head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:15px}.title{font-size:15px;font-weight:800}.sub{font-size:12px;color:var(--muted);margin-top:4px}
+.body{padding:20px}.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.full{grid-column:1/-1}
+label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.55px;color:#788296;display:block;margin-bottom:6px}
+input,select,textarea{width:100%;border:1px solid #dfe3eb;border-radius:9px;padding:10px 11px;background:#fff;color:#293247;font:inherit;font-size:12px;outline:none}input,select{height:40px}textarea{min-height:82px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:#9d95ec;box-shadow:0 0 0 3px rgba(101,88,211,.08)}
+.section-note{padding:12px 13px;background:#fafbfe;border:1px solid var(--line);border-radius:9px;color:var(--muted);font-size:11px;line-height:1.5;margin-bottom:17px}
+.save-row{display:flex;justify-content:flex-end;gap:9px;padding:15px 20px;border-top:1px solid var(--line)}
+.toggle-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid #edf0f5}.toggle-row:last-child{border-bottom:0}.toggle-text strong{display:block;font-size:12px}.toggle-text span{display:block;font-size:10px;color:var(--muted);margin-top:4px;max-width:600px}
+.switch{position:relative;width:42px;height:23px;flex:none}.switch input{display:none}.slider{position:absolute;inset:0;background:#d8dce5;border-radius:99px;cursor:pointer}.slider:before{content:"";position:absolute;width:17px;height:17px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.15s}.switch input:checked+.slider{background:var(--purple)}.switch input:checked+.slider:before{transform:translateX(19px)}
+.calendar-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.date-card{border:1px solid var(--line);border-radius:11px;padding:14px}.date-card .date-icon{width:34px;height:34px;border-radius:9px;background:#f0edff;color:var(--purple);display:grid;place-items:center;margin-bottom:10px}.date-card strong{font-size:12px;display:block}.date-card span{font-size:10px;color:var(--muted);display:block;margin-top:4px}
+.security-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}.security-card{border:1px solid var(--line);border-radius:11px;padding:14px}.security-card i{color:var(--purple);font-size:16px}.security-card strong{display:block;font-size:12px;margin-top:9px}.security-card span{display:block;font-size:10px;color:var(--muted);margin-top:4px}
+.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:760px}th{background:#fafbfe;color:#788296;font-size:10px;text-transform:uppercase;letter-spacing:.55px;text-align:left;padding:12px 14px;border-bottom:1px solid var(--line)}td{padding:13px 14px;border-bottom:1px solid #edf0f5;font-size:11px;vertical-align:middle}tr:last-child td{border-bottom:0}.pill{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:800}.green{background:var(--greenbg);color:var(--green)}.orange{background:var(--orangebg);color:var(--orange)}.blue{background:var(--bluebg);color:var(--blue)}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.info-card{border:1px solid var(--line);border-radius:11px;padding:14px}.info-card strong{font-size:12px;display:block}.info-card span{font-size:10px;color:var(--muted);display:block;margin-top:5px}
+.toast{position:fixed;right:24px;bottom:24px;background:#182033;color:#fff;padding:12px 16px;border-radius:10px;font-size:12px;display:none;z-index:30;box-shadow:var(--shadow)}.toast.show{display:block}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(10,15,27,.55);z-index:20;align-items:center;justify-content:center;padding:20px}.modal-bg.show{display:flex}.modal{width:min(570px,100%);background:#fff;border-radius:16px;box-shadow:0 25px 70px rgba(0,0,0,.22);overflow:hidden}.modal-head{padding:19px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}.modal-head h2{margin:0;font-size:17px}.close{border:0;background:none;font-size:21px;color:#778195;cursor:pointer}.modal-body{padding:22px}.modal-foot{padding:15px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:9px}
+@media(max-width:1000px){.layout{grid-template-columns:1fr}.sidebar{position:static;display:flex;overflow:auto;gap:4px}.side-item{min-width:max-content;margin:0}.security-grid{grid-template-columns:1fr 1fr}.info-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.topbar{padding:0 16px}.admin span{display:none}.wrap{padding:22px 15px 40px}.hero{display:block}.actions{margin-top:15px}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.calendar-grid,.security-grid,.info-grid{grid-template-columns:1fr}.statusbar{display:block}.save-note{margin-top:8px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+ <div class="brand"><div class="brand-mark"><i class="fa-solid fa-building-columns"></i></div><span>BWU Admin</span></div>
+ <div class="admin"><span>Administrator · BWU_ADMIN_001</span><div class="avatar"><i class="fa-solid fa-user-shield"></i></div></div>
+</header>
+
+<main class="wrap">
+<section class="hero">
+ <div><div class="eyebrow">Admin Module 14</div><h1>System Settings</h1><p>Configure global university, academic, security, notification, file and system preferences.</p></div>
+ <div class="actions"><button class="btn light" onclick="resetSettings()"><i class="fa-solid fa-rotate-left"></i> Reset</button><button class="btn primary" onclick="saveCurrent()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button></div>
+</section>
+
+<div class="statusbar">
+ <div class="status-left"><span class="status-dot"></span><div><strong>System Operational</strong><span>All core services are currently available.</span></div></div>
+ <div class="save-note" id="saveNote">Last configuration update: 01 Oct 2026 · 09:15 PM</div>
+</div>
+
+<div class="layout">
+ <aside class="sidebar">
+  <button class="side-item active" data-tab="institution"><i class="fa-solid fa-building-columns"></i> Institution</button>
+  <button class="side-item" data-tab="academic"><i class="fa-solid fa-graduation-cap"></i> Academic Settings</button>
+  <button class="side-item" data-tab="calendar"><i class="fa-solid fa-calendar-days"></i> Academic Calendar</button>
+  <button class="side-item" data-tab="security"><i class="fa-solid fa-shield-halved"></i> Security</button>
+  <button class="side-item" data-tab="notifications"><i class="fa-solid fa-bell"></i> Notifications</button>
+  <button class="side-item" data-tab="files"><i class="fa-solid fa-folder-open"></i> Files & Storage</button>
+  <button class="side-item" data-tab="preferences"><i class="fa-solid fa-sliders"></i> Preferences</button>
+  <button class="side-item" data-tab="audit"><i class="fa-solid fa-clock-rotate-left"></i> Audit Logs</button>
+ </aside>
+
+ <section>
+  <div class="content-panel active" id="institution">
+   <div class="panel">
+    <div class="head"><div><div class="title">Institution Settings</div><div class="sub">Basic identity and contact information used across the BWU system.</div></div><span class="pill green">Configured</span></div>
+    <div class="body">
+     <div class="section-note"><i class="fa-solid fa-circle-info"></i> These values can be used globally across dashboards, reports, notifications and generated academic documents.</div>
+     <div class="form-grid">
+      <div><label>Institution Name</label><input id="institutionName" value="Brainware University"></div>
+      <div><label>Short Name</label><input value="BWU"></div>
+      <div><label>Institution Type</label><select><option>University</option><option>College</option><option>Institute</option></select></div>
+      <div><label>Current Academic Session</label><select><option>2026–27</option><option>2025–26</option></select></div>
+      <div><label>Official Email</label><input value="info@bwu.ac.in"></div>
+      <div><label>Contact Number</label><input value="+91 XXXXX XXXXX"></div>
+      <div class="full"><label>Institution Address</label><textarea>Brainware University Campus, Barasat, West Bengal, India</textarea></div>
+      <div><label>Website</label><input value="https://www.brainwareuniversity.ac.in"></div>
+      <div><label>System Administrator Email</label><input value="admin@bwu.ac.in"></div>
+     </div>
+    </div>
+    <div class="save-row"><button class="btn primary" onclick="saveCurrent()">Save Institution Settings</button></div>
+   </div>
+   <div class="panel">
+    <div class="head"><div><div class="title">System Identity</div><div class="sub">Branding information displayed in the administration interface.</div></div></div>
+    <div class="body"><div class="info-grid"><div class="info-card"><strong>System Name</strong><span>BWU Academic Management System</span></div><div class="info-card"><strong>Environment</strong><span>Production</span></div><div class="info-card"><strong>Configuration Version</strong><span>v1.0 · 2026–27</span></div></div></div>
+   </div>
+  </div>
+
+  <div class="content-panel" id="academic">
+   <div class="panel">
+    <div class="head"><div><div class="title">Academic Configuration</div><div class="sub">Define the current academic structure used throughout the system.</div></div></div>
+    <div class="body">
+     <div class="form-grid">
+      <div><label>Current Semester</label><select><option>Semester III</option><option>Semester IV</option></select></div>
+      <div><label>Academic Year</label><select><option>2026–27</option><option>2027–28</option></select></div>
+      <div><label>Semester Start</label><input type="date" value="2026-06-01"></div>
+      <div><label>Semester End</label><input type="date" value="2026-12-31"></div>
+      <div><label>Grading Scale</label><select><option>10 Point CGPA</option><option>4 Point GPA</option></select></div>
+      <div><label>Passing Percentage</label><input type="number" value="40"></div>
+      <div><label>Maximum Sections / Batch</label><input type="number" value="2"></div>
+      <div><label>Default Class Start Time</label><input type="time" value="08:00"></div>
+     </div>
+    </div>
+    <div class="save-row"><button class="btn primary" onclick="saveCurrent()">Save Academic Settings</button></div>
+   </div>
+   <div class="panel">
+    <div class="head"><div><div class="title">Academic Structure</div><div class="sub">Configured values used by academic modules.</div></div></div>
+    <div class="body"><div class="info-grid"><div class="info-card"><strong>Departments</strong><span>04 active departments</span></div><div class="info-card"><strong>Semesters</strong><span>Semester I – VIII</span></div><div class="info-card"><strong>Sections</strong><span>A / B per configured batch</span></div></div></div>
+   </div>
+  </div>
+
+  <div class="content-panel" id="calendar">
+   <div class="panel">
+    <div class="head"><div><div class="title">Academic Calendar</div><div class="sub">Important dates and academic milestones for the current session.</div></div><button class="btn light" style="padding:8px 11px;font-size:11px" onclick="addDate()"><i class="fa-solid fa-plus"></i> Add Date</button></div>
+    <div class="body">
+     <div class="calendar-grid">
+      <div class="date-card"><div class="date-icon"><i class="fa-solid fa-play"></i></div><strong>Semester III Begins</strong><span>01 June 2026</span></div>
+      <div class="date-card"><div class="date-icon"><i class="fa-solid fa-pen"></i></div><strong>CT01 Assessment</strong><span>September 2026</span></div>
+      <div class="date-card"><div class="date-icon"><i class="fa-solid fa-pen"></i></div><strong>CT02 Assessment</strong><span>18 November 2026</span></div>
+      <div class="date-card"><div class="date-icon"><i class="fa-solid fa-file-signature"></i></div><strong>Term End Examination</strong><span>07 December 2026</span></div>
+      <div class="date-card"><div class="date-icon"><i class="fa-solid fa-flask"></i></div><strong>Practical Examination</strong><span>14 December 2026</span></div>
+      <div class="date-card"><div class="date-icon"><i class="fa-solid fa-flag-checkered"></i></div><strong>Result Publication</strong><span>10 January 2027</span></div>
+     </div>
+    </div>
+   </div>
+   <div class="panel">
+    <div class="head"><div><div class="title">Calendar Preferences</div><div class="sub">Control how academic dates are handled across modules.</div></div></div>
+    <div class="body">
+     <div class="toggle-row"><div class="toggle-text"><strong>Show academic calendar to students</strong><span>Allow students to see configured academic dates on their dashboard.</span></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+     <div class="toggle-row"><div class="toggle-text"><strong>Show examination dates to faculty</strong><span>Display examination milestones to authorized faculty accounts.</span></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+    </div>
+   </div>
+  </div>
+
+  <div class="content-panel" id="security">
+   <div class="panel">
+    <div class="head"><div><div class="title">Security Settings</div><div class="sub">Global authentication and account protection rules.</div></div><span class="pill green">Protected</span></div>
+    <div class="body">
+     <div class="security-grid">
+      <div class="security-card"><i class="fa-solid fa-key"></i><strong>Password Policy</strong><span>Minimum 8 characters</span></div>
+      <div class="security-card"><i class="fa-solid fa-user-lock"></i><strong>Account Lockout</strong><span>5 failed attempts</span></div>
+      <div class="security-card"><i class="fa-solid fa-clock"></i><strong>Session Timeout</strong><span>30 minutes</span></div>
+     </div>
+     <div class="form-grid">
+      <div><label>Minimum Password Length</label><input type="number" value="8"></div>
+      <div><label>Maximum Login Attempts</label><input type="number" value="5"></div>
+      <div><label>Session Timeout (minutes)</label><input type="number" value="30"></div>
+      <div><label>Password Expiry (days)</label><input type="number" value="90"></div>
+     </div>
+     <div style="margin-top:18px">
+      <div class="toggle-row"><div class="toggle-text"><strong>Require strong passwords</strong><span>Require uppercase, lowercase, number and special character.</span></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+      <div class="toggle-row"><div class="toggle-text"><strong>Lock account after failed attempts</strong><span>Temporarily restrict accounts after repeated unsuccessful logins.</span></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+      <div class="toggle-row"><div class="toggle-text"><strong>Record login activity</strong><span>Store successful and unsuccessful login events in the audit log.</span></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+     </div>
+    </div>
+    <div class="save-row"><button class="btn primary" onclick="saveCurrent()">Save Security Settings</button></div>
+   </div>
+  </div>
+
+  <div class="content-panel" id="notifications">
+   <div class="panel">
+    <div class="head"><div><div class="title">Notification Settings</div><div class="sub">Configure system-generated academic and administrative notifications.</div></div></div>
+    <div class="body">
+     <div class="toggle-row"><div class="toggle-text"><strong>Email notifications</strong><span>Allow the system to send configured notifications by email.</span></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+     <div class="toggle-row"><div class="toggle-text"><strong>Attendance alerts</strong><span>Notify students when attendance falls below the configured threshold.</span></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+     <div class="toggle-row"><div class="toggle-text"><strong>Examination notifications</strong><span>Send examination schedule and assessment-related notifications.</span></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+     <div class="toggle-row"><div class="toggle-text"><strong>Result publication notifications</strong><span>Notify authorized users when results are published.</span></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+     <div class="toggle-row"><div class="toggle-text"><strong>Academic resource notifications</strong><span>Notify students when new resources are made visible.</span></div><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+     <div class="form-grid" style="margin-top:18px">
+      <div><label>Attendance Alert Threshold</label><input type="number" value="75"></div>
+      <div><label>Notification Sender Name</label><input value="BWU Academic System"></div>
+     </div>
+    </div>
+    <div class="save-row"><button class="btn primary" onclick="saveCurrent()">Save Notification Settings</button></div>
+   </div>
+  </div>
+
+  <div class="content-panel" id="files">
+   <div class="panel">
+    <div class="head"><div><div class="title">Files & Storage</div><div class="sub">Configure academic resource upload and storage limits.</div></div></div>
+    <div class="body">
+     <div class="form-grid">
+      <div><label>Maximum File Size (MB)</label><input type="number" value="25"></div>
+      <div><label>Storage Allocation (GB)</label><input type="number" value="10"></div>
+      <div><label>Resource Retention (days)</label><input type="number" value="365"></div>
+      <div><label>Default File Visibility</label><select><option>Visible to Students</option><option>Faculty Only</option><option>Draft</option></select></div>
+      <div class="full"><label>Allowed File Types</label><input value=".pdf, .docx"></div>
+     </div>
+     <div style="margin-top:18px">
+      <div class="toggle-row"><div class="toggle-text"><strong>Validate file extensions</strong><span>Reject uploads that do not match the configured allowed types.</span></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+      <div class="toggle-row"><div class="toggle-text"><strong>Scan uploaded files</strong><span>Run configured security checks before making files available.</span></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+     </div>
+    </div>
+    <div class="save-row"><button class="btn primary" onclick="saveCurrent()">Save File Settings</button></div>
+   </div>
+   <div class="panel">
+    <div class="head"><div><div class="title">Current Storage</div><div class="sub">Academic resource storage summary.</div></div></div>
+    <div class="body"><div class="info-grid"><div class="info-card"><strong>Used Storage</strong><span>4.8 GB</span></div><div class="info-card"><strong>Available</strong><span>5.2 GB</span></div><div class="info-card"><strong>Allowed Types</strong><span>PDF, DOCX</span></div></div></div>
+   </div>
+  </div>
+
+  <div class="content-panel" id="preferences">
+   <div class="panel">
+    <div class="head"><div><div class="title">System Preferences</div><div class="sub">Default display and regional settings for the administration system.</div></div></div>
+    <div class="body">
+     <div class="form-grid">
+      <div><label>Date Format</label><select><option>DD/MM/YYYY</option><option>MM/DD/YYYY</option><option>YYYY-MM-DD</option></select></div>
+      <div><label>Time Format</label><select><option>12 Hour</option><option>24 Hour</option></select></div>
+      <div><label>Time Zone</label><select><option>Asia/Kolkata (IST)</option><option>UTC</option></select></div>
+      <div><label>Default Language</label><select><option>English</option></select></div>
+      <div><label>Default Dashboard</label><select><option>Admin Dashboard</option><option>Reports</option></select></div>
+      <div><label>Default Page Size</label><select><option>25 records</option><option>50 records</option><option>100 records</option></select></div>
+     </div>
+     <div style="margin-top:18px">
+      <div class="toggle-row"><div class="toggle-text"><strong>Show confirmation before destructive actions</strong><span>Ask administrators to confirm actions such as deleting or disabling records.</span></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+      <div class="toggle-row"><div class="toggle-text"><strong>Show system status indicators</strong><span>Display operational status and configuration timestamps in Admin pages.</span></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+     </div>
+    </div>
+    <div class="save-row"><button class="btn primary" onclick="saveCurrent()">Save Preferences</button></div>
+   </div>
+  </div>
+
+  <div class="content-panel" id="audit">
+   <div class="panel">
+    <div class="head"><div><div class="title">System Audit Logs</div><div class="sub">Recent configuration and administrative activity.</div></div><button class="btn light" style="padding:8px 11px;font-size:11px" onclick="exportAudit()"><i class="fa-solid fa-download"></i> Export Logs</button></div>
+    <div class="body" style="padding:0">
+     <div class="table-wrap"><table><thead><tr><th>Date & Time</th><th>Administrator</th><th>Action</th><th>Module</th><th>Result</th></tr></thead>
+      <tbody>
+       <tr><td>01 Oct 2026 · 09:15 PM</td><td>BWU_ADMIN_001</td><td>Updated academic session</td><td>Academic Settings</td><td><span class="pill green">Success</span></td></tr>
+       <tr><td>01 Oct 2026 · 08:42 PM</td><td>BWU_ADMIN_001</td><td>Changed notification threshold</td><td>Notifications</td><td><span class="pill green">Success</span></td></tr>
+       <tr><td>30 Sep 2026 · 06:30 PM</td><td>BWU_ADMIN_001</td><td>Updated password policy</td><td>Security</td><td><span class="pill green">Success</span></td></tr>
+       <tr><td>29 Sep 2026 · 04:18 PM</td><td>BWU_ADMIN_001</td><td>Changed resource file rules</td><td>Files & Storage</td><td><span class="pill green">Success</span></td></tr>
+       <tr><td>28 Sep 2026 · 11:05 AM</td><td>BWU_ADMIN_001</td><td>Reviewed system configuration</td><td>System Settings</td><td><span class="pill blue">Reviewed</span></td></tr>
+      </tbody></table></div>
+    </div>
+   </div>
+   <div class="panel">
+    <div class="head"><div><div class="title">Maintenance Controls</div><div class="sub">High-impact system controls should require explicit confirmation.</div></div></div>
+    <div class="body">
+     <div class="toggle-row"><div class="toggle-text"><strong>Maintenance Mode</strong><span>Temporarily restrict normal user access while system maintenance is performed.</span></div><label class="switch"><input id="maintenance" type="checkbox" onchange="maintenanceChanged()"><span class="slider"></span></label></div>
+     <div class="toggle-row"><div class="toggle-text"><strong>Read-only Academic Mode</strong><span>Prevent academic data modifications while keeping records available for viewing.</span></div><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+    </div>
+   </div>
+  </div>
+ </section>
+</div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal-bg" id="dateModal">
+ <div class="modal">
+  <div class="modal-head"><div><h2>Add Academic Date</h2><div class="sub">Add an event to the academic calendar.</div></div><button class="close" onclick="closeDateModal()">&times;</button></div>
+  <div class="modal-body">
+   <div class="form-grid">
+    <div class="full"><label>Event Name</label><input id="eventName" placeholder="e.g. Semester Break"></div>
+    <div><label>Date</label><input id="eventDate" type="date"></div>
+    <div><label>Category</label><select><option>Academic</option><option>Examination</option><option>Holiday</option><option>Administrative</option></select></div>
+   </div>
+  </div>
+  <div class="modal-foot"><button class="btn light" onclick="closeDateModal()">Cancel</button><button class="btn primary" onclick="saveDate()">Add Date</button></div>
+ </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+document.querySelectorAll('.side-item').forEach(btn=>{
+ btn.addEventListener('click',()=>{
+  document.querySelectorAll('.side-item').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.content-panel').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(btn.dataset.tab).classList.add('active');
+ });
+});
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+function saveCurrent(){document.getElementById('saveNote').textContent='Last configuration update: 01 Oct 2026 · just now';toast('System settings saved successfully')}
+function resetSettings(){if(confirm('Reset the current settings form to its configured defaults?'))toast('Settings reset to configured defaults')}
+function addDate(){document.getElementById('dateModal').classList.add('show')}
+function closeDateModal(){document.getElementById('dateModal').classList.remove('show')}
+function saveDate(){const n=document.getElementById('eventName').value.trim(),d=document.getElementById('eventDate').value;if(!n||!d){toast('Enter event name and date');return}closeDateModal();toast('Academic date added successfully')}
+function maintenanceChanged(){const on=document.getElementById('maintenance').checked;if(on){if(confirm('Enable Maintenance Mode? Normal user access may be restricted.'))toast('Maintenance Mode enabled');else document.getElementById('maintenance').checked=false}else toast('Maintenance Mode disabled')}
+function exportAudit(){const text='BWU SYSTEM AUDIT LOG\n\n01 Oct 2026 · 09:15 PM | BWU_ADMIN_001 | Updated academic session | Academic Settings | Success\n01 Oct 2026 · 08:42 PM | BWU_ADMIN_001 | Changed notification threshold | Notifications | Success\n30 Sep 2026 · 06:30 PM | BWU_ADMIN_001 | Updated password policy | Security | Success\n29 Sep 2026 · 04:18 PM | BWU_ADMIN_001 | Changed resource file rules | Files & Storage | Success';const blob=new Blob([text],{type:'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='bwu-system-audit-log.txt';a.click();URL.revokeObjectURL(a.href);toast('Audit log exported')}
+document.getElementById('dateModal').addEventListener('click',e=>{if(e.target.id==='dateModal')closeDateModal()});
+</script>
+</body>
+</html>

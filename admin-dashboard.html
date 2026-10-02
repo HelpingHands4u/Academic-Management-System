@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BWU Admin Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      background: #f5f7fb;
+      color: #172033;
+    }
+
+    .topbar {
+      height: 72px;
+      background: #111827;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: #4f46e5;
+      font-size: 16px;
+    }
+
+    .top-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: #cbd5e1;
+    }
+
+    .top-user i {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #273449;
+      color: #a5b4fc;
+    }
+
+    .page {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 34px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #ffffff 0%, #f8f7ff 100%);
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      letter-spacing: -.7px;
+    }
+
+    .hero p {
+      margin: 0;
+      color: #64748b;
+      font-size: 14px;
+      line-height: 1.6;
+      max-width: 700px;
+    }
+
+    .admin-profile {
+      min-width: 300px;
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: #111827;
+      color: #fff;
+    }
+
+    .profile-label {
+      color: #94a3b8;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      margin-bottom: 7px;
+    }
+
+    .profile-name {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    .profile-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .profile-meta span {
+      background: #1f2937;
+      color: #cbd5e1;
+      padding: 5px 8px;
+      border-radius: 7px;
+      font-size: 11px;
+    }
+
+    .section-title {
+      margin: 28px 0 13px;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 15px;
+      padding: 19px;
+    }
+
+    .stat {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .stat-label {
+      color: #64748b;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: -.5px;
+    }
+
+    .stat-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: #eef2ff;
+      color: #4f46e5;
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: 1.45fr .95fr;
+      gap: 18px;
+    }
+
+    .overview-card h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    .overview-card p {
+      margin: 0 0 18px;
+      color: #64748b;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .progress-row {
+      margin-bottom: 14px;
+    }
+
+    .progress-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 7px;
+    }
+
+    .progress-head span:first-child { color: #475569; }
+    .progress-head span:last-child { font-weight: 700; }
+
+    .progress {
+      height: 7px;
+      background: #e8edf5;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      border-radius: 20px;
+      background: #4f46e5;
+    }
+
+    .status-list {
+      display: grid;
+      gap: 11px;
+    }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 13px;
+      background: #f8fafc;
+      border-radius: 10px;
+    }
+
+    .status-left {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 12px;
+      color: #475569;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+    }
+
+    .status-value {
+      font-size: 12px;
+      font-weight: 700;
+      color: #172033;
+    }
+
+    .modules {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .module {
+      text-decoration: none;
+      color: inherit;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 17px;
+      display: block;
+    }
+
+    .module-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      background: #f1f5f9;
+      color: #4f46e5;
+      margin-bottom: 12px;
+    }
+
+    .module strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .module small {
+      color: #64748b;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .footer-note {
+      margin-top: 22px;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 11px;
+    }
+
+    @media (max-width: 1050px) {
+      .summary { grid-template-columns: repeat(2, 1fr); }
+      .modules { grid-template-columns: repeat(2, 1fr); }
+      .overview-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 700px) {
+      .topbar { padding: 0 18px; }
+      .page { padding: 20px 16px; }
+      .hero { flex-direction: column; align-items: stretch; }
+      .admin-profile { min-width: 0; }
+      .summary, .modules { grid-template-columns: 1fr; }
+      .top-user span { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon"><i class="fa-solid fa-building-columns"></i></div>
+      <span>BWU Admin Portal</span>
+    </div>
+
+    <div class="top-user">
+      <span>Administrator</span>
+      <i class="fa-solid fa-user-shield"></i>
+    </div>
+  </header>
+
+  <main class="page">
+
+    <section class="hero">
+      <div>
+        <h1>Admin Dashboard</h1>
+        <p>
+          Central overview of the academic management system. Detailed operations are
+          handled through the individual management modules.
+        </p>
+      </div>
+
+      <div class="admin-profile">
+        <div class="profile-label">Logged-in Administrator</div>
+        <div class="profile-name">System Administrator</div>
+        <div class="profile-meta">
+          <span>BWU_ADMIN_001</span>
+          <span>Administrator</span>
+          <span>Academic Administration</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-title">Overall System Summary</div>
+
+    <section class="summary">
+      <div class="card stat">
+        <div>
+          <div class="stat-label">Total Students</div>
+          <div class="stat-value">1,248</div>
+        </div>
+        <div class="stat-icon"><i class="fa-solid fa-user-graduate"></i></div>
+      </div>
+
+      <div class="card stat">
+        <div>
+          <div class="stat-label">Total Faculty</div>
+          <div class="stat-value">86</div>
+        </div>
+        <div class="stat-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+      </div>
+
+      <div class="card stat">
+        <div>
+          <div class="stat-label">Active Courses</div>
+          <div class="stat-value">119</div>
+        </div>
+        <div class="stat-icon"><i class="fa-solid fa-book-open"></i></div>
+      </div>
+
+      <div class="card stat">
+        <div>
+          <div class="stat-label">Overall Attendance</div>
+          <div class="stat-value">92.2%</div>
+        </div>
+        <div class="stat-icon"><i class="fa-solid fa-chart-line"></i></div>
+      </div>
+    </section>
+
+    <div class="section-title">Academic Overview</div>
+
+    <section class="overview-grid">
+
+      <div class="card overview-card">
+        <h3>System-wide Academic Snapshot</h3>
+        <p>
+          A compact view of the major academic areas. Use the dedicated modules
+          for detailed records, filtering, editing and reporting.
+        </p>
+
+        <div class="progress-row">
+          <div class="progress-head">
+            <span>Syllabus Completion</span>
+            <span>78.4%</span>
+          </div>
+          <div class="progress"><span style="width:78.4%"></span></div>
+        </div>
+
+        <div class="progress-row">
+          <div class="progress-head">
+            <span>Academic Resources Shared</span>
+            <span>94.9%</span>
+          </div>
+          <div class="progress"><span style="width:94.9%"></span></div>
+        </div>
+
+        <div class="progress-row">
+          <div class="progress-head">
+            <span>Examination Records Published</span>
+            <span>75%</span>
+          </div>
+          <div class="progress"><span style="width:75%"></span></div>
+        </div>
+      </div>
+
+      <div class="card overview-card">
+        <h3>System Status</h3>
+        <p>Current high-level operational status of the Admin environment.</p>
+
+        <div class="status-list">
+          <div class="status-item">
+            <div class="status-left"><span class="status-dot"></span>System</div>
+            <div class="status-value">Operational</div>
+          </div>
+
+          <div class="status-item">
+            <div class="status-left"><span class="status-dot"></span>User Access</div>
+            <div class="status-value">Stable</div>
+          </div>
+
+          <div class="status-item">
+            <div class="status-left"><span class="status-dot"></span>Academic Data</div>
+            <div class="status-value">Updated</div>
+          </div>
+
+          <div class="status-item">
+            <div class="status-left"><span class="status-dot"></span>Security</div>
+            <div class="status-value">Protected</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <div class="section-title">Quick Module Access</div>
+
+    <section class="modules">
+      <a class="module" href="student-management.html">
+        <div class="module-icon"><i class="fa-solid fa-user-graduate"></i></div>
+        <strong>Student Management</strong>
+        <small>Student directory and academic profiles.</small>
+      </a>
+
+      <a class="module" href="faculty-management.html">
+        <div class="module-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+        <strong>Faculty Management</strong>
+        <small>Faculty records, roles and status.</small>
+      </a>
+
+      <a class="module" href="course-management.html">
+        <div class="module-icon"><i class="fa-solid fa-book"></i></div>
+        <strong>Course Management</strong>
+        <small>Courses, credits, types and status.</small>
+      </a>
+
+      <a class="module" href="faculty-course-assignment.html">
+        <div class="module-icon"><i class="fa-solid fa-link"></i></div>
+        <strong>Faculty → Course</strong>
+        <small>Manage faculty-course assignments.</small>
+      </a>
+
+      <a class="module" href="class-timetable-management.html">
+        <div class="module-icon"><i class="fa-solid fa-calendar-days"></i></div>
+        <strong>Class & Timetable</strong>
+        <small>Schedule classes, rooms and faculty.</small>
+      </a>
+
+      <a class="module" href="attendance-overview.html">
+        <div class="module-icon"><i class="fa-solid fa-calendar-check"></i></div>
+        <strong>Attendance Overview</strong>
+        <small>Review academic attendance status.</small>
+      </a>
+
+      <a class="module" href="marks-examination.html">
+        <div class="module-icon"><i class="fa-solid fa-file-pen"></i></div>
+        <strong>Marks & Examination</strong>
+        <small>Assessment records and examination data.</small>
+      </a>
+
+      <a class="module" href="syllabus-monitoring.html">
+        <div class="module-icon"><i class="fa-solid fa-chart-pie"></i></div>
+        <strong>Syllabus Monitoring</strong>
+        <small>Track syllabus progress and pending work.</small>
+      </a>
+
+      <a class="module" href="academic-resources.html">
+        <div class="module-icon"><i class="fa-solid fa-folder-open"></i></div>
+        <strong>Academic Resources</strong>
+        <small>Manage PDF and DOCX resources.</small>
+      </a>
+
+      <a class="module" href="reports.html">
+        <div class="module-icon"><i class="fa-solid fa-file-lines"></i></div>
+        <strong>Reports</strong>
+        <small>Generate academic and administrative reports.</small>
+      </a>
+
+      <a class="module" href="user-access-control.html">
+        <div class="module-icon"><i class="fa-solid fa-user-lock"></i></div>
+        <strong>User & Access Control</strong>
+        <small>Manage accounts, roles and permissions.</small>
+      </a>
+
+      <a class="module" href="system-settings.html">
+        <div class="module-icon"><i class="fa-solid fa-gear"></i></div>
+        <strong>System Settings</strong>
+        <small>Configure academic and system preferences.</small>
+      </a>
+    </section>
+
+    <div class="footer-note">
+      BWU Academic Management System • Administrator Console
+    </div>
+
+  </main>
+
+</body>
+</html>

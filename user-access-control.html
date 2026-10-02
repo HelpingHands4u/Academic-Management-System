@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BWU Admin — User & Access Control</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{
+ --bg:#f4f6fb;--navy:#111827;--navy2:#1b2436;--text:#182033;--muted:#6c7588;
+ --purple:#6558d3;--purple2:#7c70e8;--line:#e5e8ef;--white:#fff;
+ --green:#159a68;--greenbg:#eaf8f2;--orange:#c77b08;--orangebg:#fff5df;
+ --red:#d34d5c;--redbg:#ffedf0;--blue:#3478d4;--bluebg:#edf5ff;
+ --shadow:0 12px 35px rgba(25,35,60,.08)
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}
+.topbar{height:70px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 34px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800}.brand-mark{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#7569ea,#4d42b6);display:grid;place-items:center}.brand span{font-size:18px}
+.admin{display:flex;align-items:center;gap:12px;color:#dce2ef;font-size:13px}.avatar{width:38px;height:38px;border-radius:50%;background:#2c3850;display:grid;place-items:center}
+.wrap{max-width:1450px;margin:auto;padding:30px 28px 50px}
+.hero{display:flex;justify-content:space-between;gap:20px;margin-bottom:24px}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--purple);font-weight:800;margin-bottom:8px}
+h1{margin:0;font-size:30px;letter-spacing:-.7px}.hero p{margin:9px 0 0;color:var(--muted);font-size:14px}.actions{display:flex;gap:10px}
+.btn{border:0;border-radius:10px;padding:11px 15px;font:700 13px Inter;cursor:pointer;display:inline-flex;gap:8px;align-items:center}.primary{background:var(--purple);color:#fff}.primary:hover{background:#5549c6}.light{background:#fff;border:1px solid var(--line);color:#3f485c}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}.kpi{background:#fff;border:1px solid var(--line);border-radius:15px;padding:20px;box-shadow:var(--shadow)}
+.kpi-top{display:flex;justify-content:space-between;align-items:center}.label{font-size:12px;color:var(--muted);font-weight:700}.icon{width:38px;height:38px;border-radius:10px;background:#f0edff;color:var(--purple);display:grid;place-items:center}.value{font-size:25px;font-weight:800;margin-top:13px}.note{font-size:11px;color:#8490a3;margin-top:4px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:20px}.head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:15px}.title{font-size:15px;font-weight:800}.sub{font-size:12px;color:var(--muted);margin-top:4px}
+.filters{padding:18px 20px;display:grid;grid-template-columns:1.3fr repeat(4,1fr) auto;gap:11px;border-bottom:1px solid var(--line)}
+label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.55px;color:#788296;display:block;margin-bottom:6px}
+select,input{width:100%;height:40px;border:1px solid #dfe3eb;border-radius:9px;padding:0 11px;background:#fff;color:#293247;font:inherit;font-size:12px;outline:none}
+select:focus,input:focus{border-color:#9d95ec;box-shadow:0 0 0 3px rgba(101,88,211,.08)}
+.reset{height:40px;padding:0 12px;border:0;border-radius:9px;background:#f1efff;color:#574bc8;font:700 12px Inter;cursor:pointer}
+.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:1120px}
+th{background:#fafbfe;color:#788296;font-size:10px;text-transform:uppercase;letter-spacing:.55px;text-align:left;padding:12px 16px;border-bottom:1px solid var(--line)}
+td{padding:14px 16px;border-bottom:1px solid #edf0f5;font-size:12px;vertical-align:middle}tr:last-child td{border-bottom:0}
+.user{display:flex;align-items:center;gap:11px}.user-avatar{width:37px;height:37px;border-radius:10px;background:#eeecff;color:var(--purple);display:grid;place-items:center;font-weight:800;font-size:12px}.user-name{font-weight:800}.muted{color:var(--muted)}
+.role{font-weight:700}.code{font-size:11px;color:#7c8597;margin-top:3px}
+.pill{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:800}.green{background:var(--greenbg);color:var(--green)}.orange{background:var(--orangebg);color:var(--orange)}.red{background:var(--redbg);color:var(--red)}.blue{background:var(--bluebg);color:var(--blue)}
+.actions-cell{display:flex;gap:6px}.icon-btn{width:31px;height:31px;border:1px solid var(--line);background:#fff;border-radius:8px;color:#5d6679;cursor:pointer}.icon-btn:hover{background:#f5f3ff;color:var(--purple)}
+.bottom{display:grid;grid-template-columns:1.05fr .95fr;gap:20px}.body{padding:20px}
+.role-card{border:1px solid var(--line);border-radius:12px;padding:15px;margin-bottom:11px}.role-card:last-child{margin-bottom:0}.role-top{display:flex;justify-content:space-between;align-items:center}.role-name{font-size:13px;font-weight:800}.role-count{font-size:10px;color:var(--muted);background:#f5f6fa;padding:5px 7px;border-radius:999px}.role-desc{font-size:11px;color:var(--muted);margin:7px 0 11px;line-height:1.5}.perm-list{display:flex;flex-wrap:wrap;gap:6px}.perm{font-size:9px;font-weight:700;padding:5px 7px;background:#f7f7fb;border:1px solid #e9eaf0;border-radius:6px;color:#5d6679}
+.activity{display:flex;gap:11px;padding:13px 0;border-bottom:1px solid #edf0f5}.activity:last-child{border-bottom:0}.activity-icon{width:35px;height:35px;border-radius:9px;background:#f0edff;color:var(--purple);display:grid;place-items:center;flex:none}.activity strong{font-size:12px}.activity small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
+.security{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}.security-box{border:1px solid var(--line);border-radius:10px;padding:13px}.security-box i{color:var(--purple);margin-bottom:8px}.security-box strong{font-size:12px;display:block}.security-box span{font-size:10px;color:var(--muted);display:block;margin-top:4px}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(10,15,27,.55);z-index:20;align-items:center;justify-content:center;padding:20px}.modal-bg.show{display:flex}
+.modal{width:min(740px,100%);background:#fff;border-radius:16px;box-shadow:0 25px 70px rgba(0,0,0,.22);overflow:hidden}.modal-head{padding:19px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}.modal-head h2{margin:0;font-size:17px}.close{border:0;background:none;font-size:21px;color:#778195;cursor:pointer}.modal-body{padding:22px}.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.full{grid-column:1/-1}.modal-foot{padding:15px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:9px}
+.permissions{border:1px solid var(--line);border-radius:10px;padding:13px}.check-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.check{font-size:11px;color:#4d5669;display:flex;align-items:center;gap:7px}.check input{width:auto;height:auto}
+.toast{position:fixed;right:24px;bottom:24px;background:#182033;color:#fff;padding:12px 16px;border-radius:10px;font-size:12px;display:none;z-index:30;box-shadow:var(--shadow)}.toast.show{display:block}
+@media(max-width:1100px){.kpis{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:repeat(3,1fr)}.bottom{grid-template-columns:1fr}}
+@media(max-width:700px){.topbar{padding:0 16px}.admin span{display:none}.wrap{padding:22px 15px 40px}.hero{display:block}.actions{margin-top:15px}.kpis{grid-template-columns:1fr}.filters{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.security{grid-template-columns:1fr}.check-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="topbar">
+ <div class="brand"><div class="brand-mark"><i class="fa-solid fa-building-columns"></i></div><span>BWU Admin</span></div>
+ <div class="admin"><span>Administrator · BWU_ADMIN_001</span><div class="avatar"><i class="fa-solid fa-user-shield"></i></div></div>
+</header>
+
+<main class="wrap">
+<section class="hero">
+ <div>
+  <div class="eyebrow">Admin Module 13</div>
+  <h1>User & Access Control</h1>
+  <p>Manage user accounts, roles, permissions, account status and secure access to the BWU academic management system.</p>
+ </div>
+ <div class="actions">
+  <button class="btn light" onclick="exportUsers()"><i class="fa-solid fa-file-export"></i> Export Users</button>
+  <button class="btn primary" onclick="openAddModal()"><i class="fa-solid fa-user-plus"></i> Add User</button>
+ </div>
+</section>
+
+<section class="kpis">
+ <div class="kpi"><div class="kpi-top"><span class="label">Total Users</span><div class="icon"><i class="fa-solid fa-users"></i></div></div><div class="value">1,458</div><div class="note">All registered system accounts</div></div>
+ <div class="kpi"><div class="kpi-top"><span class="label">Active Users</span><div class="icon"><i class="fa-solid fa-user-check"></i></div></div><div class="value">1,421</div><div class="note">Accounts currently enabled</div></div>
+ <div class="kpi"><div class="kpi-top"><span class="label">Faculty Accounts</span><div class="icon"><i class="fa-solid fa-chalkboard-user"></i></div></div><div class="value">86</div><div class="note">Faculty and academic staff</div></div>
+ <div class="kpi"><div class="kpi-top"><span class="label">Locked / Disabled</span><div class="icon"><i class="fa-solid fa-user-lock"></i></div></div><div class="value">37</div><div class="note">Require access review</div></div>
+</section>
+
+<section class="panel">
+ <div class="head">
+  <div><div class="title">User Account Directory</div><div class="sub">Search users and manage their role, access status and permissions.</div></div>
+  <span class="pill blue"><i class="fa-solid fa-shield-halved" style="margin-right:5px"></i> Role-based access</span>
+ </div>
+ <div class="filters">
+  <div><label>Search</label><input id="search" placeholder="Name, email, code or username..." oninput="render()"></div>
+  <div><label>User Type</label><select id="type" onchange="render()"><option>All Users</option><option>Student</option><option>Faculty</option><option>Administrator</option></select></div>
+  <div><label>Role</label><select id="role" onchange="render()"><option>All Roles</option><option>Student</option><option>Faculty</option><option>HOD</option><option>Exam Cell</option><option>Administrator</option></select></div>
+  <div><label>Status</label><select id="status" onchange="render()"><option>All Status</option><option>Active</option><option>Locked</option><option>Disabled</option></select></div>
+  <div><label>Access Level</label><select id="access" onchange="render()"><option>All Levels</option><option>Standard</option><option>Elevated</option><option>Full Admin</option></select></div>
+  <div><button class="reset" onclick="resetFilters()"><i class="fa-solid fa-rotate-left"></i> Reset</button></div>
+ </div>
+ <div class="table-wrap">
+  <table>
+   <thead><tr><th>User</th><th>User Type</th><th>Role</th><th>Access Level</th><th>Last Login</th><th>Status</th><th>Actions</th></tr></thead>
+   <tbody id="body"></tbody>
+  </table>
+ </div>
+</section>
+
+<section class="bottom">
+ <div class="panel">
+  <div class="head"><div><div class="title">Roles & Permissions</div><div class="sub">Configured access roles for the system.</div></div><button class="btn light" style="padding:8px 11px;font-size:11px" onclick="openRoleModal()"><i class="fa-solid fa-plus"></i> Role</button></div>
+  <div class="body">
+   <div class="role-card">
+    <div class="role-top"><span class="role-name">Administrator</span><span class="role-count">4 users</span></div>
+    <div class="role-desc">Full system administration and configuration access.</div>
+    <div class="perm-list"><span class="perm">All Modules</span><span class="perm">User Control</span><span class="perm">Reports</span><span class="perm">System Settings</span></div>
+   </div>
+   <div class="role-card">
+    <div class="role-top"><span class="role-name">HOD</span><span class="role-count">8 users</span></div>
+    <div class="role-desc">Department-level academic monitoring and management.</div>
+    <div class="perm-list"><span class="perm">Students</span><span class="perm">Faculty</span><span class="perm">Courses</span><span class="perm">Attendance</span><span class="perm">Reports</span></div>
+   </div>
+   <div class="role-card">
+    <div class="role-top"><span class="role-name">Faculty</span><span class="role-count">86 users</span></div>
+    <div class="role-desc">Teaching, attendance, marks, syllabus and resource access.</div>
+    <div class="perm-list"><span class="perm">Attendance</span><span class="perm">Marks</span><span class="perm">Syllabus</span><span class="perm">Resources</span></div>
+   </div>
+   <div class="role-card">
+    <div class="role-top"><span class="role-name">Student</span><span class="role-count">1,360 users</span></div>
+    <div class="role-desc">Personal academic information and assigned learning resources.</div>
+    <div class="perm-list"><span class="perm">Profile</span><span class="perm">Courses</span><span class="perm">Attendance</span><span class="perm">Marks</span><span class="perm">Resources</span></div>
+   </div>
+  </div>
+ </div>
+
+ <div class="panel">
+  <div class="head"><div><div class="title">Security & Access Activity</div><div class="sub">Recent account and permission events.</div></div></div>
+  <div class="body">
+   <div class="activity"><div class="activity-icon"><i class="fa-solid fa-user-plus"></i></div><div><strong>New faculty account created</strong><small>BWU_PROF_26_086 · Faculty role · 01 Oct 2026</small></div></div>
+   <div class="activity"><div class="activity-icon"><i class="fa-solid fa-key"></i></div><div><strong>Role permissions updated</strong><small>HOD role · Academic access permissions · 30 Sep 2026</small></div></div>
+   <div class="activity"><div class="activity-icon"><i class="fa-solid fa-lock"></i></div><div><strong>Account locked</strong><small>Repeated unsuccessful login attempts · 30 Sep 2026</small></div></div>
+   <div class="activity"><div class="activity-icon"><i class="fa-solid fa-user-shield"></i></div><div><strong>Administrator access reviewed</strong><small>BWU_ADMIN_001 · 29 Sep 2026</small></div></div>
+
+   <div class="security">
+    <div class="security-box"><i class="fa-solid fa-shield-halved"></i><strong>Role Based</strong><span>Access controlled by role</span></div>
+    <div class="security-box"><i class="fa-solid fa-lock"></i><strong>Account Lock</strong><span>Manual security control</span></div>
+    <div class="security-box"><i class="fa-solid fa-clock-rotate-left"></i><strong>Audit Trail</strong><span>Access events recorded</span></div>
+   </div>
+  </div>
+ </div>
+</section>
+</main>
+
+<div class="modal-bg" id="userModal">
+ <div class="modal">
+  <div class="modal-head"><div><h2 id="modalTitle">Add User Account</h2><div class="sub">Create or update a system user and assign controlled access.</div></div><button class="close" onclick="closeUserModal()">&times;</button></div>
+  <div class="modal-body">
+   <div class="form-grid">
+    <div><label>Full Name</label><input id="mName" placeholder="Enter full name"></div>
+    <div><label>Username</label><input id="mUsername" placeholder="e.g. faculty01"></div>
+    <div><label>Email</label><input id="mEmail" type="email" placeholder="user@bwu.ac.in"></div>
+    <div><label>User Type</label><select id="mType"><option>Student</option><option>Faculty</option><option>Administrator</option></select></div>
+    <div><label>Role</label><select id="mRole"><option>Student</option><option>Faculty</option><option>HOD</option><option>Exam Cell</option><option>Administrator</option></select></div>
+    <div><label>Access Level</label><select id="mAccess"><option>Standard</option><option>Elevated</option><option>Full Admin</option></select></div>
+    <div class="full"><label>Permissions</label><div class="permissions"><div class="check-grid">
+      <label class="check"><input type="checkbox" checked> Dashboard</label>
+      <label class="check"><input type="checkbox"> Student Management</label>
+      <label class="check"><input type="checkbox"> Faculty Management</label>
+      <label class="check"><input type="checkbox"> Course Management</label>
+      <label class="check"><input type="checkbox"> Attendance</label>
+      <label class="check"><input type="checkbox"> Marks & Examination</label>
+      <label class="check"><input type="checkbox"> Syllabus Monitoring</label>
+      <label class="check"><input type="checkbox"> Academic Resources</label>
+      <label class="check"><input type="checkbox"> Reports</label>
+      <label class="check"><input type="checkbox"> User & Access Control</label>
+    </div></div></div>
+    <div><label>Initial Status</label><select id="mStatus"><option>Active</option><option>Disabled</option></select></div>
+    <div><label>Temporary Password</label><input id="mPassword" type="password" placeholder="Set temporary password"></div>
+   </div>
+  </div>
+  <div class="modal-foot"><button class="btn light" onclick="closeUserModal()">Cancel</button><button class="btn primary" onclick="saveUser()"><i class="fa-solid fa-user-check"></i> Save User</button></div>
+ </div>
+</div>
+
+<div class="modal-bg" id="roleModal">
+ <div class="modal">
+  <div class="modal-head"><div><h2>Create Access Role</h2><div class="sub">Define a reusable role and its permissions.</div></div><button class="close" onclick="closeRoleModal()">&times;</button></div>
+  <div class="modal-body">
+   <div class="form-grid">
+    <div class="full"><label>Role Name</label><input id="rName" placeholder="e.g. Academic Coordinator"></div>
+    <div class="full"><label>Description</label><input id="rDesc" placeholder="Describe what this role can access"></div>
+    <div class="full"><label>Permissions</label><div class="permissions"><div class="check-grid">
+      <label class="check"><input type="checkbox"> Student Management</label>
+      <label class="check"><input type="checkbox"> Faculty Management</label>
+      <label class="check"><input type="checkbox"> Course Management</label>
+      <label class="check"><input type="checkbox"> Attendance</label>
+      <label class="check"><input type="checkbox"> Marks & Examination</label>
+      <label class="check"><input type="checkbox"> Syllabus Monitoring</label>
+      <label class="check"><input type="checkbox"> Academic Resources</label>
+      <label class="check"><input type="checkbox"> Reports</label>
+    </div></div></div>
+   </div>
+  </div>
+  <div class="modal-foot"><button class="btn light" onclick="closeRoleModal()">Cancel</button><button class="btn primary" onclick="saveRole()"><i class="fa-solid fa-shield-halved"></i> Create Role</button></div>
+ </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const users=[
+ {name:'Administrator',username:'admin',email:'admin@bwu.ac.in',type:'Administrator',role:'Administrator',access:'Full Admin',last:'01 Oct 2026 · 09:42 PM',status:'Active'},
+ {name:'Faculty 01',username:'faculty01',email:'faculty01@bwu.ac.in',type:'Faculty',role:'Faculty',access:'Standard',last:'01 Oct 2026 · 08:31 PM',status:'Active'},
+ {name:'Faculty 02',username:'faculty02',email:'faculty02@bwu.ac.in',type:'Faculty',role:'Faculty',access:'Standard',last:'01 Oct 2026 · 07:58 PM',status:'Active'},
+ {name:'HOD — CSE CYS',username:'hod.cys',email:'hod.cys@bwu.ac.in',type:'Faculty',role:'HOD',access:'Elevated',last:'01 Oct 2026 · 06:24 PM',status:'Active'},
+ {name:'Exam Cell',username:'examcell',email:'examcell@bwu.ac.in',type:'Administrator',role:'Exam Cell',access:'Elevated',last:'30 Sep 2026 · 05:45 PM',status:'Active'},
+ {name:'Student 01',username:'BWU-CYS-26-001',email:'student01@bwu.ac.in',type:'Student',role:'Student',access:'Standard',last:'01 Oct 2026 · 04:18 PM',status:'Active'},
+ {name:'Student 02',username:'BWU-CYS-26-002',email:'student02@bwu.ac.in',type:'Student',role:'Student',access:'Standard',last:'01 Oct 2026 · 03:51 PM',status:'Active'},
+ {name:'Student 03',username:'BWU-CYS-26-003',email:'student03@bwu.ac.in',type:'Student',role:'Student',access:'Standard',last:'29 Sep 2026 · 08:12 PM',status:'Locked'},
+ {name:'Faculty 07',username:'faculty07',email:'faculty07@bwu.ac.in',type:'Faculty',role:'Faculty',access:'Standard',last:'28 Sep 2026 · 02:11 PM',status:'Disabled'}
+];
+
+function initials(n){return n.split(' ').filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()}
+function render(){
+ const q=document.getElementById('search').value.toLowerCase().trim(),type=document.getElementById('type').value,role=document.getElementById('role').value,status=document.getElementById('status').value,access=document.getElementById('access').value;
+ const f=users.filter(u=>
+  (!q||`${u.name} ${u.username} ${u.email}`.toLowerCase().includes(q)) &&
+  (type==='All Users'||u.type===type)&&(role==='All Roles'||u.role===role)&&
+  (status==='All Status'||u.status===status)&&(access==='All Levels'||u.access===access)
+ );
+ document.getElementById('body').innerHTML=f.length?f.map((u)=>{
+  const i=users.indexOf(u);
+  const sclass=u.status==='Active'?'green':u.status==='Locked'?'orange':'red';
+  const aclass=u.access==='Full Admin'?'red':u.access==='Elevated'?'orange':'blue';
+  return `<tr>
+   <td><div class="user"><div class="user-avatar">${initials(u.name)}</div><div><div class="user-name">${u.name}</div><div class="code">${u.username} · ${u.email}</div></div></div></td>
+   <td>${u.type}</td><td class="role">${u.role}</td><td><span class="pill ${aclass}">${u.access}</span></td>
+   <td class="muted">${u.last}</td><td><span class="pill ${sclass}">${u.status}</span></td>
+   <td><div class="actions-cell">
+    <button class="icon-btn" title="Edit User" onclick="editUser(${i})"><i class="fa-solid fa-pen"></i></button>
+    <button class="icon-btn" title="Permissions" onclick="permissions(${i})"><i class="fa-solid fa-key"></i></button>
+    <button class="icon-btn" title="Lock / Unlock" onclick="toggleStatus(${i})"><i class="fa-solid fa-user-lock"></i></button>
+   </div></td>
+  </tr>`;
+ }).join(''):`<tr><td colspan="7" style="text-align:center;padding:35px;color:#8b94a5">No user accounts found.</td></tr>`;
+}
+function resetFilters(){document.getElementById('search').value='';document.querySelectorAll('.filters select').forEach(x=>x.selectedIndex=0);render();toast('Filters reset')}
+function openAddModal(){
+ document.getElementById('modalTitle').textContent='Add User Account';
+ ['mName','mUsername','mEmail','mPassword'].forEach(id=>document.getElementById(id).value='');
+ document.getElementById('userModal').classList.add('show');
+}
+function editUser(i){
+ const u=users[i];
+ document.getElementById('modalTitle').textContent='Edit User Account';
+ document.getElementById('mName').value=u.name;document.getElementById('mUsername').value=u.username;document.getElementById('mEmail').value=u.email;
+ document.getElementById('mType').value=u.type;document.getElementById('mRole').value=u.role;document.getElementById('mAccess').value=u.access;document.getElementById('mStatus').value=u.status==='Disabled'?'Disabled':'Active';
+ document.getElementById('userModal').dataset.editIndex=i;document.getElementById('userModal').classList.add('show');
+}
+function closeUserModal(){document.getElementById('userModal').classList.remove('show');delete document.getElementById('userModal').dataset.editIndex}
+function saveUser(){
+ const name=document.getElementById('mName').value.trim(),username=document.getElementById('mUsername').value.trim(),email=document.getElementById('mEmail').value.trim();
+ if(!name||!username||!email){toast('Please complete the required user details');return}
+ const idx=document.getElementById('userModal').dataset.editIndex;
+ const obj={name,username,email,type:document.getElementById('mType').value,role:document.getElementById('mRole').value,access:document.getElementById('mAccess').value,last:'Never · New account',status:document.getElementById('mStatus').value};
+ if(idx!==undefined)users[idx]=obj;else users.unshift(obj);
+ closeUserModal();render();toast(idx!==undefined?'User account updated':'User account created');
+}
+function permissions(i){toast(`Access permissions opened for ${users[i].name}`)}
+function toggleStatus(i){
+ if(users[i].status==='Active')users[i].status='Locked';else users[i].status='Active';
+ render();toast(`${users[i].name} is now ${users[i].status}`);
+}
+function openRoleModal(){document.getElementById('roleModal').classList.add('show')}
+function closeRoleModal(){document.getElementById('roleModal').classList.remove('show')}
+function saveRole(){const n=document.getElementById('rName').value.trim();if(!n){toast('Enter a role name');return}closeRoleModal();toast(`Role "${n}" created`)}
+function exportUsers(){
+ const csv='Name,Username,Email,User Type,Role,Access Level,Last Login,Status\n'+users.map(u=>[u.name,u.username,u.email,u.type,u.role,u.access,u.last,u.status].map(x=>`"${String(x).replaceAll('"','""')}"`).join(',')).join('\n');
+ const blob=new Blob([csv],{type:'text/csv'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='bwu-user-access-directory.csv';a.click();URL.revokeObjectURL(a.href);toast('User directory exported');
+}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+document.getElementById('userModal').addEventListener('click',e=>{if(e.target.id==='userModal')closeUserModal()});
+document.getElementById('roleModal').addEventListener('click',e=>{if(e.target.id==='roleModal')closeRoleModal()});
+render();
+</script>
+</body>
+</html>
